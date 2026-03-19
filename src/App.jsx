@@ -393,22 +393,24 @@ function App() {
 
       <footer style={{ padding: '60px 0', borderTop: '1px solid rgba(255,255,255,0.05)', width: '100%' }}>
         <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', width: '100%' }}>
-          <div style={{ marginBottom: '20px', textAlign: 'center', width: '100%' }}>
-            <h2 style={{ fontSize: '1.8rem', fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', textAlign: 'center', width: '100%', display: 'block' }}>
-              {settings.logo_url ? (
-                <img 
-                  src={settings.logo_url} 
-                  alt={settings.logo_text || settings.site_name} 
-                  style={{ 
-                    height: `${(settings.logo_size || 1) * 40}px`, 
-                    maxHeight: '100px',
-                    objectFit: 'contain' 
-                  }} 
-                />
-              ) : (
+          <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center', width: '100%' }}>
+            {settings.logo_url ? (
+              <img 
+                src={settings.logo_url} 
+                alt={settings.logo_text || settings.site_name} 
+                style={{ 
+                  height: `${(settings.logo_size || 1) * 40}px`, 
+                  maxHeight: '100px',
+                  objectFit: 'contain',
+                  margin: '0 auto', // Explicitly center the block image
+                  display: 'block'
+                }} 
+              />
+            ) : (
+              <h2 style={{ fontSize: '1.8rem', fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', textAlign: 'center' }}>
                 <div dangerouslySetInnerHTML={{ __html: settings.logo_text ? settings.logo_text.replace('Motors', '<span className="gold-text">Motors</span>') : 'Brito <span className="gold-text">Motors</span>' }} />
-              )}
-            </h2>
+              </h2>
+            )}
           </div>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textAlign: 'center' }}>© 2024 {settings.site_name || 'Brito Motors'}. Todos os direitos reservados. Design Profissional.</p>
         </div>
