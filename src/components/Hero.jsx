@@ -93,7 +93,7 @@ const Hero = () => {
             style={{ 
               display: 'flex', 
               gap: '1rem', 
-              paddingBottom: '10px',
+              paddingBottom: '0',
               maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
               WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
               width: 'max-content'
@@ -158,7 +158,7 @@ const Hero = () => {
         }
         @media (max-width: 768px) {
           .hero-carousel-list {
-            padding-bottom: 20px !important;
+            padding-bottom: 0px !important;
           }
           .hero-actions {
             flex-direction: column;
