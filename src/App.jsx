@@ -60,7 +60,7 @@ function App() {
             display: 'flex', 
             justifyContent: 'center', 
             alignItems: 'center', 
-            gap: '8px', 
+            gap: '6px', 
             flexWrap: 'wrap' 
           }}>
             {BRANDS.map((brand, idx) => (
@@ -79,13 +79,23 @@ function App() {
                   cursor: 'pointer',
                   opacity: selectedBrand === brand.name ? 1 : 0.7,
                   transition: 'all 0.3s ease',
-                  padding: '6px 10px',
+                  background: selectedBrand === brand.name ? 'rgba(var(--primary-gold-rgb), 0.12)' : 'transparent',
+                  border: selectedBrand === brand.name ? '2px solid var(--primary-gold)' : '1px solid rgba(255,255,255,0.1)',
+                  padding: '4px 8px',
                   borderRadius: '10px',
-                  background: selectedBrand === brand.name ? 'rgba(212, 175, 55, 0.12)' : 'transparent',
-                  border: selectedBrand === brand.name ? '1px solid rgba(212, 175, 55, 0.25)' : '1px solid transparent'
                 }}
               >
-                {brand.logo ? (
+                {brand.name === 'Todos' ? (
+                  <span style={{ 
+                    fontWeight: 700, 
+                    fontSize: '0.8rem', 
+                    color: selectedBrand === 'Todos' ? '#fff' : 'rgba(255,255,255,0.7)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}>
+                    Todos
+                  </span>
+                ) : (
                   <img 
                     src={brand.logo} 
                     alt={brand.name} 
@@ -95,13 +105,10 @@ function App() {
                         ? 'brightness(1.2) contrast(1.1)' 
                         : 'brightness(0.8) grayscale(0.2)',
                       transition: 'filter 0.3s ease',
-                      maxHeight: '20px',
-                      maxWidth: '80px',
+                      maxHeight: '28px',
                       objectFit: 'contain'
                     }} 
                   />
-                ) : (
-                  <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#fff' }}>{brand.name}</span>
                 )}
               </motion.div>
             ))}
@@ -122,10 +129,10 @@ function App() {
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.4 }}
                   >
-                    <div className="premium-card" style={{ borderRadius: '12px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.05)', overflow: 'hidden' }}>
+                    <div className="premium-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.05)', overflow: 'hidden' }}>
                       <div 
                         className="card-image-wrapper" 
-                        style={{ cursor: 'pointer', position: 'relative', height: '180px', overflow: 'hidden' }}
+                        style={{ cursor: 'pointer', position: 'relative', height: '180px', flexShrink: 0, overflow: 'hidden' }}
                         onClick={() => handleOpenModal(car)}
                       >
                         <div className="card-badge" style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 5, background: 'var(--primary-gold)', color: '#000', padding: '4px 12px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 700 }}>{car.year}</div>
@@ -138,15 +145,16 @@ function App() {
                       </div>
                       <div 
                         className="card-content" 
-                        style={{ padding: '20px', cursor: 'pointer' }}
+                        style={{ padding: '20px', cursor: 'pointer', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
                         onClick={() => handleOpenModal(car)}
                       >
-                        <div style={{ marginBottom: '15px' }}>
-                          <span className="card-brand" style={{ color: 'var(--primary-gold)', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>{car.brand}</span>
-                          <h3 className="card-title" style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 700, marginTop: '4px' }}>{car.name}</h3>
-                        </div>
-                        
-                        <div className="card-specs" style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
+                        <div>
+                          <div style={{ marginBottom: '15px' }}>
+                            <span className="card-brand" style={{ color: 'var(--primary-gold)', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>{car.brand}</span>
+                            <h3 className="card-title" style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 700, marginTop: '4px' }}>{car.name}</h3>
+                          </div>
+                          
+                          <div className="card-specs" style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
                           <div className="spec-item" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem' }}>
                             <Gauge size={14} strokeWidth={1.5} />
                             <span>{car.km} km</span>
@@ -156,6 +164,7 @@ function App() {
                             <span>{car.engine}</span>
                           </div>
                         </div>
+                      </div>
                         
                         <div className="card-footer" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px', paddingTop: '15px', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                           <div style={{ textAlign: 'center' }}>
@@ -183,12 +192,13 @@ function App() {
                                   width: '100%',
                                   height: '44px',
                                   fontWeight: 600,
-                                  cursor: 'pointer'
+                                  cursor: 'pointer',
+                                  whiteSpace: 'nowrap'
                                 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   const message = `Olá! Vi o ${car.name} no site e gostaria de simular um financiamento.`;
-                                  window.open(whatsappUrl(message), '_blank');
+                                  window.open(whatsappNumber ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}` : `https://wa.me/5511995819077?text=${encodeURIComponent(message)}`, '_blank');
                                 }}
                               >
                                 SIMULAR AGORA
@@ -208,11 +218,11 @@ function App() {
         {/* Sell Your Car Dedicated Section */}
         <section id="vender" style={{ 
           padding: '100px 0', 
-          background: 'linear-gradient(to bottom, #050505, #0a0a0a)',
+          background: `linear-gradient(90deg, transparent, rgba(var(--primary-gold-rgb), 0.12), transparent)`,
           position: 'relative',
           zIndex: 5,
-          borderTop: '1px solid rgba(212, 175, 55, 0.1)',
-          borderBottom: '1px solid rgba(212, 175, 55, 0.1)'
+          borderTop: `1px solid rgba(var(--primary-gold-rgb), 0.22)`,
+          borderBottom: `1px solid rgba(var(--primary-gold-rgb), 0.22)`
         }}>
           <div className="container" style={{ textAlign: 'center' }}>
             <div style={{ marginBottom: '40px' }}>
@@ -231,7 +241,7 @@ function App() {
                 fontWeight: 300,
                 letterSpacing: '1px'
               }}>
-                Avaliação justa e pagamento imediato na {settings.site_name || 'Brito Motors'}.
+                Avaliação justa e pagamento imediato na Brito Motors.
               </p>
             </div>
 
@@ -240,8 +250,6 @@ function App() {
                 <motion.button 
                   className="cta-button" 
                   style={{ 
-                    padding: '12px 32px', 
-                    fontSize: '0.9rem', 
                     display: 'flex', 
                     alignItems: 'center', 
                     gap: '10px',
@@ -365,7 +373,7 @@ function App() {
                   </div>
                   <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                     <Phone size={20} strokeWidth={1.5} className="gold-text" />
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 300 }}>{settings.phone || '(11) 99581-9077'}</p>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 300 }}>(11) 99581-9077</p>
                   </div>
                 </div>
 
