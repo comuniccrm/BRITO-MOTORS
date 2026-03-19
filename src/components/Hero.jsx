@@ -34,7 +34,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="hero" style={{ position: 'relative', height: '70vh', overflow: 'hidden' }}>
+    <section className="hero" style={{ position: 'relative', height: '85vh', overflow: 'hidden' }}>
       {/* Background with Overlay and Cinematic Zoom */}
       <AnimatePresence mode='wait'>
         <motion.div
@@ -64,18 +64,14 @@ const Hero = () => {
       </AnimatePresence>
 
       <div style={{ 
-        height: '100%', 
+        position: 'absolute',
+        bottom: '10px',
         width: '100%',
-        display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'flex-end', 
-        paddingBottom: '0',
         zIndex: 10
       }}>
         {/* Carousel Miniatures at the bottom - Infinite Scroll */}
         <div className="hero-carousel" style={{ 
           width: '100%', 
-          marginBottom: '0',
           overflow: 'hidden',
           position: 'relative'
         }}>
