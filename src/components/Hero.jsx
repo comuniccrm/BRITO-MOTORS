@@ -25,7 +25,7 @@ const Hero = () => {
     if (heroTexts.length <= 1) return;
     const interval = setInterval(() => {
       setTextIndex((prev) => (prev + 1) % heroTexts.length);
-    }, 4000);
+    }, 8000);
     return () => clearInterval(interval);
   }, [heroTexts]);
 
@@ -148,7 +148,7 @@ const Hero = () => {
           <BlurText
             key={textIndex}
             text={heroTexts[textIndex]}
-            delay={150}
+            delay={300}
             animateBy="words"
             direction="top"
             className="hero-blur-text"
