@@ -34,7 +34,7 @@ export default function CarManager() {
   useEffect(() => { fetchCars(); }, []);
 
   const openNew = () => { setForm(EMPTY_CAR); setEditCar(null); setShowForm(true); };
-  const openEdit = (car) => { setForm({ ...car }); setEditCar(car.id); setShowForm(true); };
+  const openEdit = (car) => { setForm({ ...car, gallery: Array.isArray(car.gallery) ? car.gallery : [] }); setEditCar(car.id); setShowForm(true); };
   const closeForm = () => { setShowForm(false); setEditCar(null); setForm(EMPTY_CAR); };
 
   const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
@@ -54,13 +54,39 @@ export default function CarManager() {
     setUploading(false);
   };
 
+  const handleGalleryUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+    setUploading(true);
+    
+    const newImages = [];
+    for (const file of files) {
+      const fileName = `cars/gallery/${Date.now()}_${file.name.replace(/\s/g, '_')}`;
+      const { data, error } = await supabase.storage.from('images').upload(fileName, file, { upsert: true });
+      if (!error) {
+        const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName);
+        newImages.push(urlData.publicUrl);
+      }
+    }
+    
+    setForm(f => ({ ...f, gallery: [...(f.gallery || []), ...newImages] }));
+    setUploading(false);
+  };
+
+  const removeGalleryImage = (index) => {
+    setForm(f => ({
+      ...f,
+      gallery: f.gallery.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleSave = async () => {
     setSaving(true);
     const payload = {
       name: form.name, brand: form.brand, year: form.year, km: form.km,
       price: form.price, engine: form.engine, transmission: form.transmission,
       image: form.image, description: form.description,
-      gallery: [form.image].filter(Boolean),
+      gallery: form.gallery || [form.image].filter(Boolean),
       is_active: true,
       updated_at: new Date().toISOString()
     };
@@ -168,6 +194,27 @@ export default function CarManager() {
                   </label>
                 </div>
                 {form.image && <img src={form.image} alt="preview" style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginTop: '10px' }} />}
+              </div>
+
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label style={labelStyle}>Galeria de Fotos (Mais imagens)</label>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '10px', marginBottom: '10px' }}>
+                  {form.gallery?.map((img, idx) => (
+                    <div key={idx} style={{ position: 'relative', height: '80px', borderRadius: '6px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+                      <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <button 
+                        onClick={() => removeGalleryImage(idx)}
+                        style={{ position: 'absolute', top: '2px', right: '2px', background: 'rgba(255,0,0,0.7)', border: 'none', borderRadius: '50%', width: '20px', height: '20px', color: '#fff', fontSize: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      >
+                        <X size={12} />
+                      </button>
+                    </div>
+                  ))}
+                  <label style={{ height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(212,175,55,0.3)', borderRadius: '6px', cursor: 'pointer', color: '#D4AF37' }}>
+                    <Plus size={20} />
+                    <input type="file" multiple accept="image/*" onChange={handleGalleryUpload} style={{ display: 'none' }} />
+                  </label>
+                </div>
               </div>
 
               <div style={{ gridColumn: '1 / -1' }}>
