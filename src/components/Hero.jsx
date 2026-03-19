@@ -148,8 +148,8 @@ const Hero = () => {
           <BlurText
             key={textIndex}
             text={heroTexts[textIndex]}
-            delay={300}
-            animateBy="words"
+            delay={50}
+            animateBy="letters"
             direction="top"
             className="hero-blur-text"
           />
