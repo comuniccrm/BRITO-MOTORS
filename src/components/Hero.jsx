@@ -21,15 +21,20 @@ const Hero = () => {
   }
 
   const handleWhatsApp = (car) => {
-    const message = `Olá! Gostaria de fazer uma simulação para o veículo:\n\n` +
-                   `*CARRO:* ${car.name}\n` +
-                   `*PREÇO:* ${car.price}\n\n` +
-                    `Vi no site e quero simular o financiamento.`;
+    const message = `🚀 *Interesse em Veículo - Brito Motors* 🚀\n\n` +
+                   `Olá! Gostaria de mais informações e simular um financiamento para este veículo:\n\n` +
+                   `🚗 *Modelo:* ${car.name}\n` +
+                   `🏷️ *Marca:* ${car.brand}\n` +
+                   `📅 *Ano:* ${car.year}\n` +
+                   `🛣️ *Km:* ${car.km}\n` +
+                   `⚙️ *Motor:* ${car.engine}\n` +
+                   `💰 *Valor:* ${car.price}\n\n` +
+                   `Vi no site e aguardo seu retorno! ✨`;
     window.open(`https://wa.me/${settings.whatsapp_number || '5511995819077'}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
-    <section className="hero" style={{ position: 'relative', height: '80vh', overflow: 'hidden' }}>
+    <section className="hero" style={{ position: 'relative', height: '70vh', overflow: 'hidden' }}>
       {/* Background with Overlay and Cinematic Zoom */}
       <AnimatePresence mode='wait'>
         <motion.div

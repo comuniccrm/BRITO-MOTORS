@@ -56,20 +56,22 @@ function App() {
           position: 'relative',
           zIndex: 20
         }}>
-          <div className="container" style={{ 
+          <div style={{ 
             display: 'flex', 
-            justifyContent: 'center', 
+            justifyContent: 'space-between', 
             alignItems: 'center', 
-            gap: '6px', 
-            flexWrap: 'wrap' 
+            gap: '1px', 
+            flexWrap: 'wrap',
+            width: '100%',
+            padding: '0'
           }}>
-            {BRANDS.map((brand, idx) => (
+            {BRANDS.filter(b => b.name !== 'Todos').map((brand, idx) => (
               <motion.div 
                 key={idx} 
-                whileHover={{ scale: 1.15, opacity: 1 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.1, opacity: 1 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => {
-                  setSelectedBrand(brand.name);
+                  setSelectedBrand(selectedBrand === brand.name ? 'Todos' : brand.name);
                   document.getElementById('estoque')?.scrollIntoView({ behavior: 'smooth' });
                 }}
                 style={{ 
@@ -77,25 +79,14 @@ function App() {
                   alignItems: 'center', 
                   justifyContent: 'center',
                   cursor: 'pointer',
-                  opacity: selectedBrand === brand.name ? 1 : 0.5,
+                  opacity: selectedBrand === brand.name ? 1 : 0.4,
                   transition: 'all 0.3s ease',
                   background: 'transparent',
                   border: 'none',
-                  padding: '4px 10px',
+                  padding: '2px 6px',
                   borderRadius: '0',
                 }}
               >
-                {brand.name === 'Todos' ? (
-                  <span style={{ 
-                    fontWeight: 700, 
-                    fontSize: '0.8rem', 
-                    color: selectedBrand === 'Todos' ? '#fff' : 'rgba(255,255,255,0.7)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}>
-                    Todos
-                  </span>
-                ) : (
                   <img 
                     src={brand.logo} 
                     alt={brand.name} 
@@ -103,13 +94,12 @@ function App() {
                     style={{ 
                       filter: selectedBrand === brand.name 
                         ? 'brightness(1.2) contrast(1.1)' 
-                        : 'brightness(0.8) grayscale(0.2)',
+                        : 'brightness(0.7) grayscale(0.1)',
                       transition: 'filter 0.3s ease',
                       maxHeight: '34px',
                       objectFit: 'contain'
                     }} 
                   />
-                )}
               </motion.div>
             ))}
           </div>
@@ -197,7 +187,15 @@ function App() {
                                 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  const message = `Olá! Vi o ${car.name} no site e gostaria de simular um financiamento.`;
+                                  const message = `🚀 *Interesse em Veículo - Brito Motors* 🚀\n\n` +
+                                                 `Olá! Gostaria de mais informações e simular um financiamento para este veículo:\n\n` +
+                                                 `🚗 *Modelo:* ${car.name}\n` +
+                                                 `🏷️ *Marca:* ${car.brand}\n` +
+                                                 `📅 *Ano:* ${car.year}\n` +
+                                                 `🛣️ *Km:* ${car.km}\n` +
+                                                 `⚙️ *Motor:* ${car.engine}\n` +
+                                                 `💰 *Valor:* ${car.price}\n\n` +
+                                                 `Vi no site e aguardo seu retorno! ✨`;
                                   window.open(whatsappNumber ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}` : `https://wa.me/5511995819077?text=${encodeURIComponent(message)}`, '_blank');
                                 }}
                               >
@@ -393,7 +391,7 @@ function App() {
 
               <div style={{ height: '350px', borderRadius: '15px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.0512270908!2d-46.6945890251!3d-23.6025134789!2m3!1f0!2f0!3f0!3m2!i1024!2i768!4f13.1!3m3!1m2!1s0x94ce50cb680a6711%3A0x1c8b323c9603058a!2sAv.%20das%20Na%C3%A7%C3%B5es%20Unidas%2C%2012551%20-%20Brooklin%20Novo%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2004578-903!5e0!3m2!1spt-BR!2sbr!4v1710688000000!5m2!1spt-BR!2sbr" 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.0512270908!2d-46.6945890251!3d-23.6025134789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce50cb680a6711%3A0x1c8b323c9603058a!2sAv.%20das%20Na%C3%A7%C3%B5es%20Unidas%2C%2012551%20-%20Brooklin%20Novo%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2004578-903!5e0!3m2!1spt-BR!2sbr!4v1710688000000!5m2!1spt-BR!2sbr" 
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 
