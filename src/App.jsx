@@ -347,21 +347,7 @@ function App() {
           <div className="container">
             <div className="contact-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center' }}>
-                <div className="logo" style={{ marginBottom: '40px' }}>
-                  {settings.logo_url ? (
-                    <img 
-                      src={settings.logo_url} 
-                      alt={settings.logo_text || settings.site_name} 
-                      style={{ 
-                        height: `${(settings.logo_size || 1) * 50}px`, 
-                        maxHeight: '120px',
-                        objectFit: 'contain' 
-                      }} 
-                    />
-                  ) : (
-                    <div dangerouslySetInnerHTML={{ __html: settings.logo_text ? settings.logo_text.replace('Motors', '<span className="gold-text">Motors</span>') : 'Brito <span className="gold-text">Motors</span>' }} />
-                  )}
-                </div>
+                {/* Removed logo from here as requested */}
 
                 <h2 style={{ fontSize: '2rem', marginBottom: '25px', fontWeight: 700 }}>VISITE <span className="gold-text">NOSSA LOJA</span></h2>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
