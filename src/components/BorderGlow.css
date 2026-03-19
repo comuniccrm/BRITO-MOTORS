@@ -1,0 +1,54 @@
+.border-glow-card {
+  position: relative;
+  border-radius: var(--border-radius);
+  background: var(--card-bg);
+  padding: 1px; /* The "border" width */
+  overflow: hidden;
+  display: flex;
+  isolation: isolate;
+}
+
+.border-glow-inner {
+  position: relative;
+  z-index: 2;
+  border-radius: calc(var(--border-radius) - 1px);
+  background: var(--card-bg);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.edge-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: var(--border-radius);
+  background: conic-gradient(
+    from var(--cursor-angle) at 50% 50%,
+    transparent 0deg,
+    var(--glow-color) calc(var(--cone-spread) * 1.5deg),
+    transparent calc(var(--cone-spread) * 3deg)
+  );
+  filter: blur(calc(var(--glow-padding) * 0.4px));
+  opacity: calc(var(--edge-proximity) / 70); /* Increased from /100 */
+  mix-blend-mode: screen;
+  transition: opacity 0.3s ease;
+}
+
+/* Sweep animation class if needed */
+.sweep-active .edge-glow {
+  opacity: calc(var(--edge-proximity) / 100);
+}
+
+/* Optional: Subtle background gradient based on colors */
+.border-glow-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--gradient-base);
+  opacity: calc(var(--fill-opacity) * (var(--edge-proximity) / 100));
+  mix-blend-mode: overlay;
+  transition: opacity 0.3s ease;
+}

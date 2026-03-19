@@ -1,0 +1,479 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-gold: #D4AF37;
+  --primary-gold-rgb: 212, 175, 55;
+  --secondary-gold: #C5A059;
+  --bg-dark: #0A0A0A;
+  --bg-darker: #050505;
+  --card-bg: #151515;
+  --text-main: #FFFFFF;
+  --text-muted: #A0A0A0;
+  --navbar-height: 80px;
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  line-height: 1.6;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-smooth);
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-darker);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--card-bg);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-gold);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.gold-text {
+  color: var(--primary-gold);
+}
+
+.glass-effect {
+  background: rgba(21, 21, 21, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.button-primary {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  background-color: var(--primary-gold);
+  color: var(--bg-dark);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: var(--transition-smooth);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.button-primary:hover {
+  background-color: var(--secondary-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+}
+
+.section-padding {
+  padding: 80px 0;
+}
+
+#estoque {
+  padding-top: 20px;
+}
+
+@media (max-width: 1024px) {
+  .hero h1 {
+    font-size: 3rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.2rem !important;
+  }
+  .hero p {
+    font-size: 1rem !important;
+    display: none; /* Removing description on smaller screens as requested to declutter */
+  }
+  .navbar-links {
+    display: none !important; /* Will implement a mobile menu or just simplify for now */
+  }
+  .hero-carousel {
+    bottom: 20px !important;
+  }
+  .hero-carousel-item {
+    min-width: 160px !important;
+    height: 90px !important;
+  }
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+}
+
+/* Component Specific Classes */
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+  width: 100%;
+}
+
+.section-title {
+  display: flex !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100% !important;
+}
+
+.hero-content {
+  max-width: 800px;
+  padding: 0 4%;
+  z-index: 10;
+}
+
+.brand-logo {
+  height: 36px;
+  width: auto;
+  max-width: 60px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .brand-logo {
+    height: 24px;
+    max-width: 45px;
+  }
+}
+
+.hero-carousel {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  width: 100%;
+  padding: 0 4%;
+  z-index: 10;
+}
+
+.hero-carousel-list {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding-bottom: 15px;
+  scrollbar-width: none;
+}
+
+.hero-carousel-list::-webkit-scrollbar {
+  display: none;
+}
+
+.car-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile by default */
+  justify-content: center;
+  gap: 12px;
+  padding: 20px 0;
+}
+
+@media (min-width: 1024px) {
+  .car-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Narrower on desktop */
+    gap: 20px;
+  }
+}
+
+.premium-card {
+  position: relative;
+  overflow: hidden;
+  background: #0a0a0a;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  min-height: 480px; /* Made them "longer" (taller) */
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.premium-glow-wrapper {
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-glow-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.9);
+}
+
+.card-image-wrapper {
+  position: relative;
+  height: 220px; /* Increased from 120px to push content down */
+  overflow: hidden;
+  border-radius: 4px 4px 0 0; /* Reduced from 12px 12px 0 0 */
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.1, 0, 0.3, 1);
+}
+
+.premium-card:hover .card-image {
+  transform: scale(1.08);
+}
+
+.card-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(212, 175, 55, 0.95);
+  color: black;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 5;
+}
+
+.card-content {
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-brand {
+  font-size: 0.55rem;
+  color: var(--primary-gold);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.card-title {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  color: white;
+  line-height: 1.1;
+  font-weight: 500;
+}
+
+.card-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 8px;
+  padding: 6px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.spec-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.spec-icon {
+  color: var(--primary-gold);
+  opacity: 0.8;
+}
+
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: auto;
+  width: 100%;
+}
+
+.card-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.card-button {
+  background: transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--primary-gold);
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-button:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--primary-gold);
+  color: var(--primary-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+}
+
+
+
+.cta-button {
+    background: var(--primary-gold);
+    color: black;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle light border for definition */
+    padding: 10px 28px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    background: #e5c05b;
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}
+
+@media (max-width: 480px) {
+  .card-footer {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  .card-price {
+    margin-bottom: 8px;
+  }
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  padding: 0 4%;
+}
+
+/* Lux Shimmer Text Effect */
+.lux-text {
+  background: linear-gradient(
+    to right, 
+    #ffffff 0%, 
+    #D4AF37 25%, 
+    #ffffff 50%, 
+    #D4AF37 75%, 
+    #ffffff 100%
+  );
+  background-size: 200% auto;
+  color: #000;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: lux-shimmer 4s linear infinite;
+  display: inline-block;
+}
+
+@keyframes lux-shimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1rem !important;
+  }
+}
+
+
+
+/* Testimonial Section Adjustments */
+.customer-grid {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center !important;
+  gap: 20px;
+}
+
+.testimonial-card {
+  max-width: 220px !important;
+  width: 100% !important;
+  flex: 0 1 220px;
+}
+
+@media (max-width: 768px) {
+  .customer-grid {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+    padding-bottom: 20px !important;
+    scroll-snap-type: x mandatory !important;
+    gap: 12px !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none;
+    padding-left: 10% !important;
+    padding-right: 10% !important;
+  }
+  .customer-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .testimonial-card {
+    flex: 0 0 200px !important;
+    max-width: 200px !important;
+    scroll-snap-align: center !important;
+  }
+}
