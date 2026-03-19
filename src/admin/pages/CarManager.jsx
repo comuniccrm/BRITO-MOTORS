@@ -25,7 +25,7 @@ export default function CarManager() {
     const { data, error } = await supabase.from('cars').select('*').order('created_at', { ascending: false });
     if (error) {
        console.error('Error fetching cars:', error);
-       alert('Erro ao carregar veículos. Verifique a conexão com o banco de dados.');
+       alert(`Erro ao carregar veículos: ${error.message || 'Verifique a conexão com o banco de dados.'}`);
     }
     setCars(data || []);
     setLoading(false);
