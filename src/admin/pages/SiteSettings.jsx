@@ -1,221 +1,301 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Save, Upload, Trash2, Smartphone, Layout, Type } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
-import { Save, Upload, Phone, Palette, Type, Image } from 'lucide-react';
 
-const inputStyle = {
-  width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-  borderRadius: '8px', padding: '10px 14px', color: '#fff', fontSize: '0.85rem',
-  outline: 'none', boxSizing: 'border-box', fontFamily: "'Montserrat', sans-serif"
-};
-const labelStyle = { color: 'rgba(255,255,255,0.5)', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', display: 'block', marginBottom: '6px' };
-const sectionStyle = { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '24px', marginBottom: '20px' };
-const sectionTitleStyle = { color: '#D4AF37', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' };
-
-export default function SiteSettings() {
-  const [settings, setSettings] = useState({});
+const SiteSettings = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploadingLogo, setUploadingLogo] = useState(false);
-  const [uploadingLogoMobile, setUploadingLogoMobile] = useState(false);
-  const [uploadingHero, setUploadingHero] = useState(false);
-  const [uploadingHeroMobile, setUploadingHeroMobile] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [settings, setSettings] = useState({
+    logo_url: '',
+    logo_url_mobile: '',
+    logo_size: '150',
+    logo_size_mobile: '100', // Initialize mobile size
+    hero_bg: '',
+    hero_text_1: '',
+    hero_text_1_size: '1',
+    hero_text_1_color: '#ffffff',
+    hero_text_2: '',
+    hero_text_2_size: '1',
+    hero_text_2_color: '#ffffff',
+    hero_text_3: '',
+    hero_text_3_size: '1',
+    hero_text_3_color: '#ffffff',
+    banner_url_mobile: '', // New field for mobile static banner
+    whatsapp_number: '',
+    primary_color: '#D4AF37',
+    footer_text: ''
+  });
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
 
   const fetchSettings = async () => {
-    const { data } = await supabase.from('site_settings').select('*');
-    const obj = {};
-    data?.forEach(row => { obj[row.key] = row.value; });
-    setSettings(obj);
-    setLoading(false);
+    try {
+      const { data, error } = await supabase
+        .from('site_settings')
+        .select('*');
+      
+      if (error) throw error;
+      
+      if (data && data.length > 0) {
+        // Create an object from the array of settings
+        const settingsObj = {};
+        data.forEach(item => {
+          settingsObj[item.key] = item.value;
+        });
+        setSettings(prev => ({ ...prev, ...settingsObj }));
+      }
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  useEffect(() => { fetchSettings(); }, []);
+  const handleChange = (key, value) => {
+    setSettings(prev => ({ ...prev, [key]: value }));
+  };
 
-  const handleChange = (key, value) => setSettings(s => ({ ...s, [key]: value }));
-
-  const handleUpload = async (e, key) => {
+  const handleFileUpload = async (e, key) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (key === 'logo_url') setUploadingLogo(true);
-    else if (key === 'logo_url_mobile') setUploadingLogoMobile(true);
-    else if (key === 'banner_url_mobile') setUploadingHeroMobile(true);
-    else setUploadingHero(true);
-    const folder = key.includes('logo') ? 'logo' : 'hero';
-    const fileName = `${folder}/${Date.now()}_${file.name.replace(/\s/g, '_')}`;
-    const { error } = await supabase.storage.from('images').upload(fileName, file, { upsert: true });
-    if (!error) {
-      const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName);
-      handleChange(key, urlData.publicUrl);
+
+    try {
+      setSaving(true);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${key}-${Math.random()}.${fileExt}`;
+      const filePath = `settings/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('car-images')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('car-images')
+        .getPublicUrl(filePath);
+
+      handleChange(key, publicUrl);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Erro ao fazer upload da imagem');
+    } finally {
+      setSaving(false);
     }
-    setUploadingLogo(false);
-    setUploadingLogoMobile(false);
-    setUploadingHero(false);
-    setUploadingHeroMobile(false);
   };
 
   const handleSave = async () => {
-    setSaving(true);
-    const updates = Object.entries(settings).map(([key, value]) =>
-      supabase.from('site_settings').upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: 'key' })
-    );
-    await Promise.all(updates);
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    try {
+      setSaving(true);
+      
+      // Prepare settings for upsert
+      const upsertData = Object.entries(settings).map(([key, value]) => ({
+        key,
+        value: String(value)
+      }));
+
+      const { error } = await supabase
+        .from('site_settings')
+        .upsert(upsertData, { onConflict: 'key' });
+
+      if (error) throw error;
+      alert('Configurações salvas com sucesso!');
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      alert('Erro ao salvar configurações');
+    } finally {
+      setSaving(false);
+    }
   };
 
-  if (loading) return <p style={{ color: 'rgba(255,255,255,0.3)', textAlign: 'center', marginTop: '60px' }}>Carregando...</p>;
+  if (loading) return <div className="admin-loading">Carregando...</div>;
+
+  const sectionStyle = {
+    background: 'rgba(255,255,255,0.03)',
+    padding: '24px',
+    borderRadius: '12px',
+    marginBottom: '24px',
+    border: '1px solid rgba(255,255,255,0.05)'
+  };
+
+  const labelStyle = {
+    display: 'block',
+    marginBottom: '8px',
+    fontSize: '0.875rem',
+    fontWeight: '500',
+    color: '#9ca3af'
+  };
+
+  const inputStyle = {
+    width: '100%',
+    padding: '10px 12px',
+    background: '#0a0a0a',
+    border: '1px solid rgba(255,255,255,0.1)',
+    borderRadius: '8px',
+    color: 'white',
+    fontSize: '0.95rem',
+    outline: 'none',
+    transition: 'border-color 0.2s'
+  };
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-        <h1 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase' }}>Configurações</h1>
-        <button onClick={handleSave} disabled={saving} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: saved ? '#22c55e' : '#D4AF37', color: '#000', border: 'none', borderRadius: '8px', padding: '10px 20px', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '1px', fontFamily: "'Montserrat', sans-serif", transition: 'background 0.3s' }}>
-          <Save size={15} /> {saving ? 'Salvando...' : saved ? 'Salvo!' : 'Salvar Tudo'}
+    <div className="admin-page">
+      <div className="admin-header">
+        <h1>Configurações do Site</h1>
+        <button 
+          className="admin-btn-primary" 
+          onClick={handleSave}
+          disabled={saving}
+        >
+          <Save size={20} />
+          {saving ? 'Salvando...' : 'Salvar Alterações'}
         </button>
       </div>
 
-      {/* Brand / Logo */}
-      <div style={sectionStyle}>
-        <p style={sectionTitleStyle}><Image size={16} /> Logo e Nome da Empresa</p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-          <div>
-            <label style={labelStyle}>Nome do Site</label>
-            <input value={settings.site_name || ''} onChange={e => handleChange('site_name', e.target.value)} style={inputStyle} />
+      <div className="admin-grid" style={{ gridTemplateColumns: '1fr' }}>
+        {/* Logos Section */}
+        <div style={sectionStyle}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+            <Layout className="text-primary-gold" size={24} />
+            <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Logotipos e Identidade</h2>
           </div>
-          <div>
-            <label style={labelStyle}>Texto da Logo</label>
-            <input value={settings.logo_text || ''} onChange={e => handleChange('logo_text', e.target.value)} style={inputStyle} />
-          </div>
-          <div>
-            <label style={labelStyle}>Tamanho da Logo (1 = normal)</label>
-            <input type="number" step="0.1" min="0.5" max="3" value={settings.logo_size || '1'} onChange={e => handleChange('logo_size', e.target.value)} style={inputStyle} />
-          </div>
-          <div>
-            <label style={labelStyle}>PNG da Logo (Desktop)</label>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <input value={settings.logo_url || ''} onChange={e => handleChange('logo_url', e.target.value)} placeholder="URL ou faça upload" style={{ ...inputStyle, flex: 1 }} />
-              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px', padding: '10px 12px', color: '#D4AF37', cursor: 'pointer', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
-                <Upload size={14} />{uploadingLogo ? '...' : 'PNG'}
-                <input type="file" accept="image/png,image/*" onChange={e => handleUpload(e, 'logo_url')} style={{ display: 'none' }} />
-              </label>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+            <div>
+              <label style={labelStyle}>Logo Principal (Desktop)</label>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <input value={settings.logo_url || ''} readOnly style={inputStyle} />
+                <label className="admin-btn-secondary" style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                  <Upload size={18} />
+                  Upload
+                  <input type="file" hidden onChange={e => handleFileUpload(e, 'logo_url')} />
+                </label>
+              </div>
+              <div style={{ marginTop: '10px' }}>
+                <label style={labelStyle}>Tamanho da Logo (px)</label>
+                <input type="number" value={settings.logo_size || '150'} onChange={e => handleChange('logo_size', e.target.value)} style={inputStyle} />
+              </div>
             </div>
-            {settings.logo_url && <img src={settings.logo_url} alt="logo" style={{ height: '40px', objectFit: 'contain', marginTop: '8px' }} />}
-          </div>
-          <div>
-            <label style={labelStyle}>PNG da Logo (Celular - Opcional)</label>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px', alignItems: 'center' }}>
-              <input value={settings.logo_url_mobile || ''} onChange={e => handleChange('logo_url_mobile', e.target.value)} placeholder="URL ou faça upload" style={inputStyle} />
-              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px', padding: '10px 12px', color: '#D4AF37', cursor: 'pointer', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
-                <Upload size={14} />{uploadingLogoMobile ? '...' : 'PNG'}
-                <input type="file" accept="image/png,image/*" onChange={e => handleUpload(e, 'logo_url_mobile')} style={{ display: 'none' }} />
-              </label>
+
+            <div>
+              <label style={labelStyle}>Logo Mobile (Específico Celular)</label>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <input value={settings.logo_url_mobile || ''} readOnly style={inputStyle} />
+                <label className="admin-btn-secondary" style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                  <Smartphone size={18} />
+                  Upload
+                  <input type="file" hidden onChange={e => handleFileUpload(e, 'logo_url_mobile')} />
+                </label>
+              </div>
+              <div style={{ marginTop: '10px' }}>
+                <label style={labelStyle}>Tamanho Logo Celular (px)</label>
+                <input type="number" value={settings.logo_size_mobile || '100'} onChange={e => handleChange('logo_size_mobile', e.target.value)} style={inputStyle} />
+              </div>
             </div>
-            {settings.logo_url_mobile && <img src={settings.logo_url_mobile} alt="logo mobile" style={{ height: '40px', objectFit: 'contain', marginTop: '8px' }} />}
-          </div>
-          <div>
-            <label style={labelStyle}>Tamanho da Logo Celular (1 = normal)</label>
-            <input type="number" step="0.1" min="0.5" max="3" value={settings.logo_size_mobile || '1'} onChange={e => handleChange('logo_size_mobile', e.target.value)} style={inputStyle} />
           </div>
         </div>
-      </div>
 
-      {/* Hero Banner */}
-      <div style={sectionStyle}>
-        <p style={sectionTitleStyle}><Image size={16} /> Banner do Hero</p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-          <div>
-            <label style={labelStyle}>Título do Hero</label>
-            <input value={settings.hero_title || ''} onChange={e => handleChange('hero_title', e.target.value)} style={inputStyle} />
+        {/* Hero Section */}
+        <div style={sectionStyle}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+            <Type className="text-primary-gold" size={24} />
+            <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Banner Hero e Textos Dinâmicos</h2>
           </div>
-          <div>
-            <label style={labelStyle}>Subtítulo do Hero</label>
-            <input value={settings.hero_subtitle || ''} onChange={e => handleChange('hero_subtitle', e.target.value)} style={inputStyle} />
-          </div>
-          <div style={{ gridColumn: '1 / -1' }}>
-            <label style={labelStyle}>Imagem de Fundo do Hero</label>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <input value={settings.hero_bg || ''} onChange={e => handleChange('hero_bg', e.target.value)} placeholder="URL da imagem ou faça upload" style={{ ...inputStyle, flex: 1 }} />
-              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px', padding: '10px 12px', color: '#D4AF37', cursor: 'pointer', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
-                <Upload size={14} />{uploadingHero ? '...' : 'Upload'}
-                <input type="file" accept="image/*" onChange={e => handleUpload(e, 'hero_bg')} style={{ display: 'none' }} />
+
+          <div style={{ marginBottom: '20px' }}>
+            <label style={labelStyle}>Fundo do Hero (Backup)</label>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <input value={settings.hero_bg || ''} readOnly style={inputStyle} />
+              <label className="admin-btn-secondary" style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                <Upload size={18} />
+                Upload
+                <input type="file" hidden onChange={e => handleFileUpload(e, 'hero_bg')} />
               </label>
             </div>
             {settings.hero_bg && <img src={settings.hero_bg} alt="hero bg" style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px', marginTop: '10px' }} />}
           </div>
-          <div>
-            <label style={labelStyle}>Texto Alternado 1 (Blur Effect)</label>
-            <input value={settings.hero_text_1 || ''} onChange={e => handleChange('hero_text_1', e.target.value)} placeholder="Frase 1" style={inputStyle} />
+
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 120px', gap: '12px', alignItems: 'end' }}>
+            <div>
+              <label style={labelStyle}>Texto Alternado 1 (Blur Effect)</label>
+              <input value={settings.hero_text_1 || ''} onChange={e => handleChange('hero_text_1', e.target.value)} placeholder="Frase 1" style={inputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Tamanho (Título)</label>
+              <input type="number" step="0.1" value={settings.hero_text_1_size || '1'} onChange={e => handleChange('hero_text_1_size', e.target.value)} style={inputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Cor</label>
+              <input type="color" value={settings.hero_text_1_color || '#ffffff'} onChange={e => handleChange('hero_text_1_color', e.target.value)} style={{ ...inputStyle, padding: '2px', height: '38px' }} />
+            </div>
           </div>
-          <div>
-            <label style={labelStyle}>Texto Alternado 2 (Blur Effect)</label>
-            <input value={settings.hero_text_2 || ''} onChange={e => handleChange('hero_text_2', e.target.value)} placeholder="Frase 2" style={inputStyle} />
+
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 120px', gap: '12px', alignItems: 'end', marginTop: '16px' }}>
+            <div>
+              <label style={labelStyle}>Texto Alternado 2 (Blur Effect)</label>
+              <input value={settings.hero_text_2 || ''} onChange={e => handleChange('hero_text_2', e.target.value)} placeholder="Frase 2" style={inputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Tamanho</label>
+              <input type="number" step="0.1" value={settings.hero_text_2_size || '1'} onChange={e => handleChange('hero_text_2_size', e.target.value)} style={inputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Cor</label>
+              <input type="color" value={settings.hero_text_2_color || '#ffffff'} onChange={e => handleChange('hero_text_2_color', e.target.value)} style={{ ...inputStyle, padding: '2px', height: '38px' }} />
+            </div>
           </div>
-          <div style={{ gridColumn: '1 / -1' }}>
-            <label style={labelStyle}>Texto Alternado 3 (Blur Effect)</label>
-            <input value={settings.hero_text_3 || ''} onChange={e => handleChange('hero_text_3', e.target.value)} placeholder="Frase 3" style={inputStyle} />
+
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 120px', gap: '12px', alignItems: 'end', marginTop: '16px' }}>
+            <div>
+              <label style={labelStyle}>Texto Alternado 3 (Blur Effect)</label>
+              <input value={settings.hero_text_3 || ''} onChange={e => handleChange('hero_text_3', e.target.value)} placeholder="Frase 3" style={inputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Tamanho</label>
+              <input type="number" step="0.1" value={settings.hero_text_3_size || '1'} onChange={e => handleChange('hero_text_3_size', e.target.value)} style={inputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Cor</label>
+              <input type="color" value={settings.hero_text_3_color || '#ffffff'} onChange={e => handleChange('hero_text_3_color', e.target.value)} style={{ ...inputStyle, padding: '2px', height: '38px' }} />
+            </div>
           </div>
-          <div style={{ gridColumn: '1 / -1' }}>
+
+          <div style={{ gridColumn: '1 / -1', marginTop: '20px' }}>
             <label style={labelStyle}>Banner do Hero (Celular - Estático)</label>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <input value={settings.banner_url_mobile || ''} onChange={e => handleChange('banner_url_mobile', e.target.value)} placeholder="URL da imagem ou faça upload" style={{ ...inputStyle, flex: 1 }} />
-              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px', padding: '10px 12px', color: '#D4AF37', cursor: 'pointer', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
-                <Upload size={14} />{uploadingHeroMobile ? '...' : 'Upload'}
-                <input type="file" accept="image/*" onChange={e => handleUpload(e, 'banner_url_mobile')} style={{ display: 'none' }} />
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <input value={settings.banner_url_mobile || ''} readOnly style={inputStyle} />
+              <label className="admin-btn-secondary" style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                <Upload size={18} />
+                Upload Banner Mobile
+                <input type="file" hidden onChange={e => handleFileUpload(e, 'banner_url_mobile')} />
               </label>
             </div>
-            {settings.banner_url_mobile && <img src={settings.banner_url_mobile} alt="hero mobile bg" style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px', marginTop: '10px' }} />}
           </div>
         </div>
-      </div>
 
-      {/* Colors */}
-      <div style={sectionStyle}>
-        <p style={sectionTitleStyle}><Palette size={16} /> Cores do Site</p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
-          {[
-            { key: 'primary_color', label: 'Cor Primária (Dourado)' },
-            { key: 'button_bg_color', label: 'Fundo dos Botões' },
-            { key: 'button_text_color', label: 'Texto dos Botões' },
-          ].map(({ key, label }) => (
-            <div key={key}>
-              <label style={labelStyle}>{label}</label>
-              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <input type="color" value={settings[key] || '#D4AF37'} onChange={e => handleChange(key, e.target.value)}
-                  style={{ width: '40px', height: '40px', border: 'none', background: 'none', cursor: 'pointer', borderRadius: '6px', padding: '0' }} />
-                <input value={settings[key] || ''} onChange={e => handleChange(key, e.target.value)} style={{ ...inputStyle, flex: 1 }} />
-              </div>
+        {/* Contact & Footer */}
+        <div style={sectionStyle}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+            <Smartphone className="text-primary-gold" size={24} />
+            <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Contato e Rodapé</h2>
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+            <div>
+              <label style={labelStyle}>WhatsApp (Ex: 5511999999999)</label>
+              <input value={settings.whatsapp_number || ''} onChange={e => handleChange('whatsapp_number', e.target.value)} style={inputStyle} />
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Texts / Buttons */}
-      <div style={sectionStyle}>
-        <p style={sectionTitleStyle}><Type size={16} /> Textos dos Botões</p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-          {[
-            { key: 'btn_simulate', label: 'Botão "Simular" (Navbar)' },
-            { key: 'btn_see_car', label: 'Botão "Ver Carro"' },
-            { key: 'btn_sell', label: 'Botão "Vender Meu Carro"' },
-          ].map(({ key, label }) => (
-            <div key={key}>
-              <label style={labelStyle}>{label}</label>
-              <input value={settings[key] || ''} onChange={e => handleChange('btn_see_car', e.target.value)} style={inputStyle} />
+            <div>
+              <label style={labelStyle}>Texto do Rodapé</label>
+              <input value={settings.footer_text || ''} onChange={e => handleChange('footer_text', e.target.value)} style={inputStyle} />
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* WhatsApp */}
-      <div style={sectionStyle}>
-        <p style={sectionTitleStyle}><Phone size={16} /> WhatsApp</p>
-        <div style={{ maxWidth: '400px' }}>
-          <label style={labelStyle}>Número com DDI (ex: 5511999999999)</label>
-          <input value={settings.whatsapp_number || ''} onChange={e => handleChange('whatsapp_number', e.target.value)} placeholder="5511995819077" style={inputStyle} />
-          <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.7rem', marginTop: '8px' }}>Somente números, sem espaços ou símbolos.</p>
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default SiteSettings;

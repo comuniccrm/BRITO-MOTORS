@@ -16,10 +16,10 @@ const Hero = () => {
   const [textIndex, setTextIndex] = useState(0);
 
   const heroTexts = [
-    settings.hero_text_1,
-    settings.hero_text_2,
-    settings.hero_text_3
-  ].filter(t => t && t.trim() !== '');
+    { text: settings.hero_text_1, size: settings.hero_text_1_size, color: settings.hero_text_1_color, id: 1 },
+    { text: settings.hero_text_2, size: settings.hero_text_2_size, color: settings.hero_text_2_color, id: 2 },
+    { text: settings.hero_text_3, size: settings.hero_text_3_size, color: settings.hero_text_3_color, id: 3 }
+  ].filter(t => t.text && t.text.trim() !== '');
 
   useEffect(() => {
     if (heroTexts.length <= 1) return;
@@ -146,12 +146,16 @@ const Hero = () => {
           pointerEvents: 'none'
         }}>
           <BlurText
-            key={textIndex}
-            text={heroTexts[textIndex]}
+            key={`${textIndex}-${heroTexts[textIndex].id}`}
+            text={heroTexts[textIndex].text}
             delay={50}
             animateBy="letters"
             direction="top"
             className="hero-blur-text"
+            style={{ 
+              color: heroTexts[textIndex].color || '#ffffff',
+              transform: `scale(${heroTexts[textIndex].size || 1})`
+            }}
           />
         </div>
       )}
