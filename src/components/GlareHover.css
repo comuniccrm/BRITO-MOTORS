@@ -1,8 +1,9 @@
 .glare-hover {
   position: relative;
-  display: inline-block;
+  display: flex; /* Changed from inline-block for flex parent behavior */
   width: var(--gh-width);
   height: var(--gh-height);
+  flex-direction: column;
   background: var(--gh-bg);
   border-radius: var(--gh-br);
   border: 1px solid var(--gh-border);

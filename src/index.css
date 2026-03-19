@@ -254,6 +254,9 @@ section {
   .car-grid {
     gap: 8px;
   }
+  .premium-glow-wrapper, .premium-card {
+    height: 100%;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -614,4 +617,180 @@ section {
   object-fit: cover;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.card-button {
+  background: transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--primary-gold);
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-button:hover {
+  border-color: var(--primary-gold);
+  color: var(--primary-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(var(--primary-gold-rgb), 0.2);
+}
+
+.cta-button {
+    background: var(--btn-bg, #d4af37);
+    color: var(--btn-text, #000);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+    box-shadow: 0 8px 25px rgba(var(--primary-gold-rgb), 0.2);
+    white-space: nowrap;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    background: #e5c05b;
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 5px 15px rgba(var(--primary-gold-rgb), 0.3);
+}
+
+@media (max-width: 480px) {
+  .cta-button {
+    padding: 10px 20px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-footer {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 8px !important;
+  }
+  .card-price {
+    margin-bottom: 4px;
+    font-size: 1.2rem !important;
+  }
+  .premium-card {
+    height: 100% !important;
+    min-height: auto !important;
+  }
+  .card-image-wrapper {
+    height: 110px !important;
+  }
+  .card-content {
+    padding: 10px !important;
+  }
+  .card-title {
+    font-size: 0.9rem !important;
+    margin-bottom: 4px !important;
+  }
+  .card-specs {
+    margin-bottom: 8px !important;
+    padding: 4px 0 !important;
+    gap: 2px !important;
+  }
+  .spec-item {
+    font-size: 0.65rem !important;
+  }
+  .card-button {
+    height: 38px !important;
+    font-size: 0.7rem !important;
+    padding: 4px 12px !important;
+  }
+}
+
+/* Lux Shimmer Text Effect */
+.lux-text {
+  background: linear-gradient(
+    to right, 
+    #ffffff 0%, 
+    var(--primary-gold) 75%, 
+    #ffffff 100%
+  );
+  background-size: 200% auto;
+  color: #000;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: lux-shimmer 4s linear infinite;
+  display: inline-block;
+}
+
+@keyframes lux-shimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1rem !important;
+  }
+}
+
+.card-button, .cta-button {
+  white-space: nowrap !important;
+  flex-wrap: nowrap !important;
+}
+
+@media (max-width: 480px) {
+  .card-button {
+    font-size: 0.75rem !important;
+    padding: 8px 15px !important;
+  }
+  .cta-button {
+    font-size: 0.8rem !important;
+    padding: 10px 20px !important;
+  }
+}
+
+/* Testimonial Section Adjustments */
+.customer-grid {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center !important;
+  gap: 20px;
+}
+
+.testimonial-card {
+  max-width: 220px !important;
+  width: 100% !important;
+  flex: 0 1 220px;
+}
+
+@media (max-width: 768px) {
+  .customer-grid {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+    padding-bottom: 20px !important;
+    scroll-snap-type: x mandatory !important;
+    gap: 12px !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none;
+    padding-left: 10% !important;
+    padding-right: 10% !important;
+  }
+  .customer-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .testimonial-card {
+    flex: 0 0 200px !important;
+    max-width: 200px !important;
+    scroll-snap-align: center !important;
+  }
 }
