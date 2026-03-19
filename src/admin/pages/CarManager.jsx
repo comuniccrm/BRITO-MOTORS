@@ -22,7 +22,11 @@ export default function CarManager() {
   const [uploading, setUploading] = useState(false);
 
   const fetchCars = async () => {
-    const { data } = await supabase.from('cars').select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('cars').select('*').order('created_at', { ascending: false });
+    if (error) {
+       console.error('Error fetching cars:', error);
+       alert('Erro ao carregar veículos. Verifique a conexão com o banco de dados.');
+    }
     setCars(data || []);
     setLoading(false);
   };
@@ -45,7 +49,6 @@ export default function CarManager() {
       const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName);
       setForm(f => ({ ...f, image: urlData.publicUrl }));
     } else {
-      // Fallback: show error
       alert('Erro ao fazer upload. Verifique se o bucket "images" existe no Supabase Storage.');
     }
     setUploading(false);
@@ -58,6 +61,7 @@ export default function CarManager() {
       price: form.price, engine: form.engine, transmission: form.transmission,
       image: form.image, description: form.description,
       gallery: [form.image].filter(Boolean),
+      is_active: true,
       updated_at: new Date().toISOString()
     };
     if (editCar) {
@@ -154,7 +158,6 @@ export default function CarManager() {
                 </div>
               ))}
 
-              {/* Image Upload */}
               <div style={{ gridColumn: '1 / -1' }}>
                 <label style={labelStyle}>Foto Principal</label>
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -167,7 +170,6 @@ export default function CarManager() {
                 {form.image && <img src={form.image} alt="preview" style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginTop: '10px' }} />}
               </div>
 
-              {/* Description */}
               <div style={{ gridColumn: '1 / -1' }}>
                 <label style={labelStyle}>Descrição</label>
                 <textarea name="description" value={form.description || ''} onChange={handleChange} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />

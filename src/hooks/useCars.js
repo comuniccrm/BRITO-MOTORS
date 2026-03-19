@@ -2,10 +2,6 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { CARS as FALLBACK_CARS, BRANDS as FALLBACK_BRANDS } from '../data/cars';
 
-/**
- * Hook: returns live cars and brands from Supabase.
- * Falls back to static data while loading or on error.
- */
 export function useCars() {
   const [cars, setCars] = useState(FALLBACK_CARS);
   const [brands, setBrands] = useState(FALLBACK_BRANDS);
@@ -19,8 +15,10 @@ export function useCars() {
           supabase.from('brands').select('*').eq('is_active', true).order('name'),
         ]);
 
+        if (carsRes.error) console.error('Supabase Cars Error:', carsRes.error);
+        if (brandsRes.error) console.error('Supabase Brands Error:', brandsRes.error);
+
         if (carsRes.data && carsRes.data.length > 0) {
-          // Normalize Supabase data to match the shape the site expects
           const normalized = carsRes.data.map(c => ({
             id: c.id,
             name: c.name,
@@ -42,7 +40,6 @@ export function useCars() {
             name: b.name,
             logo: b.logo || '',
           }));
-          // Always include "Todos" as first option
           const withAll = [{ name: 'Todos', logo: '' }, ...normalizedBrands.filter(b => b.name !== 'Todos')];
           setBrands(withAll);
         }

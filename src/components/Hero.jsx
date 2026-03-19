@@ -1,17 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CARS } from '../data/cars';
 import BorderGlow from './BorderGlow';
+import { useSettings } from '../hooks/useSettings.jsx';
+import { useCars } from '../hooks/useCars';
 
 const Hero = () => {
-  const [activeCar, setActiveCar] = useState(CARS[0]);
+  const { cars: CARS, loading } = useCars();
+  const [activeCar, setActiveCar] = useState(null);
+  const settings = useSettings();
+  
+  // Set first car as active when cars are loaded
+  useEffect(() => {
+    if (CARS.length > 0 && !activeCar) {
+      setActiveCar(CARS[0]);
+    }
+  }, [CARS, activeCar]);
+
+  if (loading || !activeCar) {
+    return <div style={{ height: '80vh', background: '#050505' }} />;
+  }
 
   const handleWhatsApp = (car) => {
     const message = `Olá! Gostaria de fazer uma simulação para o veículo:\n\n` +
                    `*CARRO:* ${car.name}\n` +
                    `*PREÇO:* ${car.price}\n\n` +
-                   `Vi no site e quero simular o financiamento.`;
-    window.open(`https://wa.me/5511995819077?text=${encodeURIComponent(message)}`, '_blank');
+                    `Vi no site e quero simular o financiamento.`;
+    window.open(`https://wa.me/${settings.whatsapp_number || '5511995819077'}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
@@ -61,7 +75,7 @@ const Hero = () => {
         }}>
           <motion.div 
             className="hero-carousel-list" 
-            animate={{ x: [0, -1888] }} // Updated math: (minWidth 220 + gap 16) * 8 = 1888
+            animate={{ x: [0, -1888] }} 
             transition={{
               x: {
                 repeat: Infinity,
@@ -131,24 +145,6 @@ const Hero = () => {
           </motion.div>
         </div>
       </div>
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        .hero-carousel-list::-webkit-scrollbar {
-          display: none;
-        }
-        @media (max-width: 768px) {
-          .hero-carousel-list {
-            padding-bottom: 30px !important;
-          }
-          .hero-actions {
-            flex-direction: column;
-          }
-          .hero-btn-primary, .hero-btn-secondary {
-            width: 100% !important;
-            justify-content: center;
-          }
-        }
-      `}} />
     </section>
   );
 };
