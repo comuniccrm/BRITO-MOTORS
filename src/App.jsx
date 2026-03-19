@@ -231,7 +231,7 @@ function App() {
                 fontWeight: 300,
                 letterSpacing: '1px'
               }}>
-                Avaliação justa e pagamento imediato na Brito Motors.
+                Avaliação justa e pagamento imediato na {settings.site_name || 'Brito Motors'}.
               </p>
             </div>
 
@@ -343,7 +343,11 @@ function App() {
               <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center' }}>
                 <div className="logo" style={{ marginBottom: '40px' }}>
                   {settings.logo_url ? (
-                    <img src={settings.logo_url} alt="logo" style={{ height: '50px' }} />
+                    <img 
+                      src={settings.logo_url} 
+                      alt={settings.logo_text || settings.site_name} 
+                      style={{ height: `${(settings.logo_size || 1) * 50}px`, objectFit: 'contain' }} 
+                    />
                   ) : (
                     <div dangerouslySetInnerHTML={{ __html: settings.logo_text ? settings.logo_text.replace('Motors', '<span className="gold-text">Motors</span>') : 'Brito <span className="gold-text">Motors</span>' }} />
                   )}
@@ -357,7 +361,7 @@ function App() {
                   </div>
                   <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                     <Phone size={20} strokeWidth={1.5} className="gold-text" />
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 300 }}>(11) 99581-9077</p>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 300 }}>{settings.phone || '(11) 99581-9077'}</p>
                   </div>
                 </div>
 
@@ -396,7 +400,11 @@ function App() {
           <div style={{ marginBottom: '20px', textAlign: 'center', width: '100%' }}>
             <h2 style={{ fontSize: '1.8rem', fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', textAlign: 'center', width: '100%', display: 'block' }}>
               {settings.logo_url ? (
-                <img src={settings.logo_url} alt="logo" style={{ height: '40px' }} />
+                <img 
+                  src={settings.logo_url} 
+                  alt={settings.logo_text || settings.site_name} 
+                  style={{ height: `${(settings.logo_size || 1) * 40}px`, objectFit: 'contain' }} 
+                />
               ) : (
                 <div dangerouslySetInnerHTML={{ __html: settings.logo_text ? settings.logo_text.replace('Motors', '<span className="gold-text">Motors</span>') : 'Brito <span className="gold-text">Motors</span>' }} />
               )}
