@@ -132,7 +132,7 @@ function App() {
                     <div className="premium-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.05)', overflow: 'hidden' }}>
                       <div 
                         className="card-image-wrapper" 
-                        style={{ cursor: 'pointer', position: 'relative', height: '180px', flexShrink: 0, overflow: 'hidden' }}
+                        style={{ cursor: 'pointer', position: 'relative', height: '160px', flexShrink: 0, overflow: 'hidden' }}
                         onClick={() => handleOpenModal(car)}
                       >
                         <div className="card-badge" style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 5, background: 'var(--primary-gold)', color: '#000', padding: '4px 12px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 700 }}>{car.year}</div>
