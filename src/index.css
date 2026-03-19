@@ -399,15 +399,37 @@ img {
     flex-direction: column;
     align-items: stretch;
     text-align: center;
+    gap: 8px !important;
   }
   .card-price {
-    margin-bottom: 8px;
+    margin-bottom: 4px;
+    font-size: 1.2rem !important;
   }
   .premium-card {
-    min-height: 380px !important;
+    min-height: auto !important;
   }
   .card-image-wrapper {
-    height: 140px !important;
+    height: 110px !important;
+  }
+  .card-content {
+    padding: 10px !important;
+  }
+  .card-title {
+    font-size: 0.9rem !important;
+    margin-bottom: 4px !important;
+  }
+  .card-specs {
+    margin-bottom: 8px !important;
+    padding: 4px 0 !important;
+    gap: 2px !important;
+  }
+  .spec-item {
+    font-size: 0.65rem !important;
+  }
+  .card-button {
+    height: 38px !important;
+    font-size: 0.7rem !important;
+    padding: 4px 12px !important;
   }
 }
 
