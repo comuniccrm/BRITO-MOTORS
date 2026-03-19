@@ -69,13 +69,13 @@ const Hero = () => {
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'flex-end', 
-        paddingBottom: '0.8rem',
+        paddingBottom: '0',
         zIndex: 10
       }}>
         {/* Carousel Miniatures at the bottom - Infinite Scroll */}
         <div className="hero-carousel" style={{ 
           width: '100%', 
-          marginBottom: '5px',
+          marginBottom: '0',
           overflow: 'hidden',
           position: 'relative'
         }}>
@@ -93,7 +93,7 @@ const Hero = () => {
             style={{ 
               display: 'flex', 
               gap: '1rem', 
-              paddingBottom: '20px',
+              paddingBottom: '10px',
               maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
               WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
               width: 'max-content'
@@ -158,7 +158,7 @@ const Hero = () => {
         }
         @media (max-width: 768px) {
           .hero-carousel-list {
-            padding-bottom: 30px !important;
+            padding-bottom: 20px !important;
           }
           .hero-actions {
             flex-direction: column;
