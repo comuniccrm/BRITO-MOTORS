@@ -63,18 +63,19 @@ const Hero = () => {
         />
       </AnimatePresence>
 
-      <div className="container" style={{ 
+      <div style={{ 
         height: '100%', 
+        width: '100%',
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'flex-end', 
-        paddingBottom: '5vh',
+        paddingBottom: '0.8rem',
         zIndex: 10
       }}>
         {/* Carousel Miniatures at the bottom - Infinite Scroll */}
         <div className="hero-carousel" style={{ 
           width: '100%', 
-          marginBottom: '20px',
+          marginBottom: '5px',
           overflow: 'hidden',
           position: 'relative'
         }}>
