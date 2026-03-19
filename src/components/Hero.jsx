@@ -23,12 +23,17 @@ const Hero = () => {
   useEffect(() => {
     let animationFrame;
     const scroll = () => {
-      if (scrollRef.current && !isInteracting) {
-        scrollRef.current.scrollLeft += 0.8; // Speed factor
+      if (scrollRef.current) {
+        // Only auto-increment if NOT interacting
+        if (!isInteracting) {
+          scrollRef.current.scrollLeft += 1.5; // Increased speed for visibility
+        }
         
-        // Loop reset logic: if we reach halfway (duplicated content), jump back to start
-        if (scrollRef.current.scrollLeft >= (scrollRef.current.scrollWidth / 2)) {
-          scrollRef.current.scrollLeft = 0;
+        // Loop reset logic: ALWAYS check this so they don't hit the end while dragging
+        // Use half width since we duplicated the items [...CARS, ...CARS]
+        const half = scrollRef.current.scrollWidth / 2;
+        if (scrollRef.current.scrollLeft >= half) {
+          scrollRef.current.scrollLeft -= half;
         }
       }
       animationFrame = requestAnimationFrame(scroll);
@@ -104,6 +109,7 @@ const Hero = () => {
             onMouseLeave={() => setIsInteracting(false)}
             onTouchStart={() => setIsInteracting(true)}
             onTouchEnd={() => setIsInteracting(false)}
+            onTouchCancel={() => setIsInteracting(false)}
             style={{ 
               display: 'flex', 
               gap: '1rem', 
