@@ -346,7 +346,11 @@ function App() {
                     <img 
                       src={settings.logo_url} 
                       alt={settings.logo_text || settings.site_name} 
-                      style={{ height: `${(settings.logo_size || 1) * 50}px`, objectFit: 'contain' }} 
+                      style={{ 
+                        height: `${(settings.logo_size || 1) * 50}px`, 
+                        maxHeight: '120px',
+                        objectFit: 'contain' 
+                      }} 
                     />
                   ) : (
                     <div dangerouslySetInnerHTML={{ __html: settings.logo_text ? settings.logo_text.replace('Motors', '<span className="gold-text">Motors</span>') : 'Brito <span className="gold-text">Motors</span>' }} />
@@ -403,7 +407,11 @@ function App() {
                 <img 
                   src={settings.logo_url} 
                   alt={settings.logo_text || settings.site_name} 
-                  style={{ height: `${(settings.logo_size || 1) * 40}px`, objectFit: 'contain' }} 
+                  style={{ 
+                    height: `${(settings.logo_size || 1) * 40}px`, 
+                    maxHeight: '100px',
+                    objectFit: 'contain' 
+                  }} 
                 />
               ) : (
                 <div dangerouslySetInnerHTML={{ __html: settings.logo_text ? settings.logo_text.replace('Motors', '<span className="gold-text">Motors</span>') : 'Brito <span className="gold-text">Motors</span>' }} />

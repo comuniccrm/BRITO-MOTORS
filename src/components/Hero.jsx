@@ -48,7 +48,7 @@ const Hero = () => {
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.85) 15%, rgba(0,0,0,0.15) 85%), url(${activeCar.image})`,
+            backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.85) 15%, rgba(0,0,0,0.15) 85%), url(${settings.hero_bg || activeCar.image})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             zIndex: -1,
@@ -75,7 +75,7 @@ const Hero = () => {
         }}>
           <motion.div 
             className="hero-carousel-list" 
-            animate={{ x: [0, -1888] }} 
+            animate={{ x: [0, -1888] }} // Updated math: (minWidth 220 + gap 16) * 8 = 1888
             transition={{
               x: {
                 repeat: Infinity,
@@ -145,6 +145,24 @@ const Hero = () => {
           </motion.div>
         </div>
       </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        .hero-carousel-list::-webkit-scrollbar {
+          display: none;
+        }
+        @media (max-width: 768px) {
+          .hero-carousel-list {
+            padding-bottom: 30px !important;
+          }
+          .hero-actions {
+            flex-direction: column;
+          }
+          .hero-btn-primary, .hero-btn-secondary {
+            width: 100% !important;
+            justify-content: center;
+          }
+        }
+      `}} />
     </section>
   );
 };

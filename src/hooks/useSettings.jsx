@@ -26,15 +26,22 @@ export const SettingsProvider = ({ children }) => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const { data } = await supabase.from('site_settings').select('*');
+        const { data } = await supabase.from('site_settings').select('*').order('updated_at', { ascending: true });
         if (data && data.length > 0) {
           const obj = { ...DEFAULT_SETTINGS };
           data.forEach(row => { obj[row.key] = row.value; });
+          console.log('Site settings loaded:', obj);
           setSettings(obj);
 
-          // Apply CSS custom property for primary color so the whole site reacts
+          // Apply CSS custom properties for theming
           if (obj.primary_color) {
             document.documentElement.style.setProperty('--primary-gold', obj.primary_color);
+          }
+          if (obj.button_bg_color) {
+            document.documentElement.style.setProperty('--btn-bg', obj.button_bg_color);
+          }
+          if (obj.button_text_color) {
+            document.documentElement.style.setProperty('--btn-text', obj.button_text_color);
           }
         }
       } catch (err) {
