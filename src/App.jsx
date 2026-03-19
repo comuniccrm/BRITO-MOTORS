@@ -77,12 +77,12 @@ function App() {
                   alignItems: 'center', 
                   justifyContent: 'center',
                   cursor: 'pointer',
-                  opacity: selectedBrand === brand.name ? 1 : 0.7,
+                  opacity: selectedBrand === brand.name ? 1 : 0.5,
                   transition: 'all 0.3s ease',
-                  background: selectedBrand === brand.name ? 'rgba(var(--primary-gold-rgb), 0.12)' : 'transparent',
-                  border: selectedBrand === brand.name ? '2px solid var(--primary-gold)' : '1px solid rgba(255,255,255,0.1)',
-                  padding: '4px 8px',
-                  borderRadius: '10px',
+                  background: 'transparent',
+                  border: 'none',
+                  padding: '4px 10px',
+                  borderRadius: '0',
                 }}
               >
                 {brand.name === 'Todos' ? (
@@ -105,7 +105,7 @@ function App() {
                         ? 'brightness(1.2) contrast(1.1)' 
                         : 'brightness(0.8) grayscale(0.2)',
                       transition: 'filter 0.3s ease',
-                      maxHeight: '28px',
+                      maxHeight: '34px',
                       objectFit: 'contain'
                     }} 
                   />
