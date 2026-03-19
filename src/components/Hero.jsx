@@ -94,13 +94,11 @@ const Hero = () => {
         ) : (
           <motion.div
             key={activeCar.id}
-            initial={{ opacity: 0, scale: 1.05, x: -30 }}
-            animate={{ opacity: 1, scale: 1.12, x: 30 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ 
-              opacity: { duration: 1.5, ease: "easeInOut" },
-              scale: { duration: 8, ease: "linear" },
-              x: { duration: 8, ease: "linear" }
+              opacity: { duration: 1.5, ease: "easeInOut" }
             }}
             style={{
               position: 'absolute',
