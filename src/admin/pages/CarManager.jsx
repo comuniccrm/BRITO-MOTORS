@@ -44,8 +44,8 @@ export default function CarManager() {
   useEffect(() => { fetchData(); }, []);
 
   const openNew = () => { setForm(EMPTY_CAR); setEditCar(null); setShowForm(true); };
-  const openEdit = (car) => { setForm({ ...car, gallery: Array.isArray(car.gallery) ? car.gallery : [] }); setEditCar(car.id); setShowForm(true); };
-  const closeForm = () => { setShowForm(false); setEditCar(null); setForm(EMPTY_CAR); setShowBrandSelector(false); };
+  const openEdit = (car) => { setForm({ ...car }); setEditCar(car.id); setShowForm(true); };
+  const closeForm = () => { setShowForm(false); setEditCar(null); setForm(EMPTY_CAR); };
 
   const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -59,6 +59,7 @@ export default function CarManager() {
       const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName);
       setForm(f => ({ ...f, image: urlData.publicUrl }));
     } else {
+      // Fallback: show error
       alert('Erro ao fazer upload. Verifique se o bucket "images" existe no Supabase Storage.');
     }
     setUploading(false);
@@ -198,26 +199,24 @@ export default function CarManager() {
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                           {brands.find(b => b.name === form.brand)?.logo && (
-                            <img src={brands.find(b => b.name === form.brand).logo} alt="" style={{ height: '16px', filter: 'brightness(0) invert(1)' }} />
+                            <img src={brands.find(b => b.name === form.brand).logo} alt="" style={{ height: '18px', width: '30px', objectFit: 'contain' }} />
                           )}
                           <span>{form.brand || 'Selecionar Marca'}</span>
                         </div>
                         <Plus size={16} />
                       </div>
                       {showBrandSelector && (
-                        <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: '#1a1a1a', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px', zIndex: 1100, marginTop: '5px', padding: '10px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', maxHeight: '300px', overflowY: 'auto', boxShadow: '0 10px 25px rgba(0,0,0,0.5)' }}>
+                        <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: '#111', border: '1px solid rgba(212,175,55,0.4)', borderRadius: '12px', zIndex: 1100, marginTop: '8px', padding: '12px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', maxHeight: '280px', overflowY: 'auto', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
                           {brands.map(brand => (
                             <div 
                               key={brand.id}
                               onClick={() => { setForm(f => ({ ...f, brand: brand.name })); setShowBrandSelector(false); }}
-                              style={{ padding: '8px', borderRadius: '6px', background: form.brand === brand.name ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.03)', cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s' }}
-                              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(212,175,55,0.1)'}
-                              onMouseLeave={(e) => e.currentTarget.style.background = form.brand === brand.name ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.03)'}
+                              style={{ padding: '10px 6px', borderRadius: '8px', background: form.brand === brand.name ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.02)', border: `1px solid ${form.brand === brand.name ? 'rgba(212,175,55,0.3)' : 'transparent'}`, cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s ease' }}
                             >
                               {brand.logo ? (
-                                <img src={brand.logo} alt={brand.name} style={{ height: '24px', maxWidth: '100%', objectFit: 'contain', filter: 'brightness(0) invert(1)', marginBottom: '4px' }} />
-                              ) : <div style={{ height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Image size={16} color="rgba(255,255,255,0.2)" /></div>}
-                              <div style={{ fontSize: '9px', color: form.brand === brand.name ? '#D4AF37' : 'rgba(255,255,255,0.6)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: form.brand === brand.name ? 600 : 400 }}>{brand.name}</div>
+                                <img src={brand.logo} alt={brand.name} style={{ height: '24px', width: '100%', objectFit: 'contain', marginBottom: '6px' }} />
+                              ) : <div style={{ height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.3)' }}>---</div>}
+                              <div style={{ fontSize: '9px', fontWeight: 600, color: form.brand === brand.name ? '#D4AF37' : 'rgba(255,255,255,0.7)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{brand.name}</div>
                             </div>
                           ))}
                         </div>
@@ -229,6 +228,7 @@ export default function CarManager() {
                 </div>
               ))}
 
+              {/* Image Upload */}
               <div style={{ gridColumn: '1 / -1' }}>
                 <label style={labelStyle}>Foto Principal</label>
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -262,6 +262,7 @@ export default function CarManager() {
                 </div>
               </div>
 
+              {/* Description */}
               <div style={{ gridColumn: '1 / -1' }}>
                 <label style={labelStyle}>Descrição</label>
                 <textarea name="description" value={form.description || ''} onChange={handleChange} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
