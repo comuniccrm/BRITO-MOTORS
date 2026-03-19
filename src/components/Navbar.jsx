@@ -9,7 +9,14 @@ import './Navbar.css';
 const Navbar = ({ setSelectedBrand }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const settings = useSettings();
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const handleHomeClick = (e) => {
         // Only trigger if setSelectedBrand is available
@@ -39,14 +46,28 @@ const Navbar = ({ setSelectedBrand }) => {
         <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
             <div className="container navbar-container">
                 <div className="logo" onClick={handleHomeClick} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    {settings.logo_url ? (
+                    {(isMobile && settings.logo_url_mobile) ? (
                         <img 
-                            src={settings.logo_url} 
+                            src={settings.logo_url_mobile} 
                             alt={settings.logo_text || settings.site_name} 
+                            className="nav-logo mobile-logo"
                             style={{ 
                                 height: `${(settings.logo_size || 1) * 40}px`, 
                                 maxHeight: scrolled ? '50px' : '80px', 
-                                objectFit: 'contain' 
+                                objectFit: 'contain',
+                                transition: 'all 0.3s'
+                            }} 
+                        />
+                    ) : settings.logo_url ? (
+                        <img 
+                            src={settings.logo_url} 
+                            alt={settings.logo_text || settings.site_name} 
+                            className="nav-logo"
+                            style={{ 
+                                height: `${(settings.logo_size || 1) * 40}px`, 
+                                maxHeight: scrolled ? '50px' : '80px', 
+                                objectFit: 'contain',
+                                transition: 'all 0.3s'
                             }} 
                         />
                     ) : (
@@ -58,10 +79,10 @@ const Navbar = ({ setSelectedBrand }) => {
                 <div className="nav-links">
                     {menuItems.map((item) => (
                         <a 
-                            key={item.name} 
-                            href={item.href} 
-                            className="nav-link"
-                            onClick={item.onClick}
+                          key={item.name} 
+                          href={item.href} 
+                          className="nav-link"
+                          onClick={item.onClick}
                         >
                             {item.name}
                         </a>
@@ -79,10 +100,10 @@ const Navbar = ({ setSelectedBrand }) => {
                         <button 
                             className="cta-button"
                             style={{ 
-                                background: 'transparent', 
-                                border: 'none', 
-                                color: 'black', 
-                                fontWeight: 700
+                              background: 'transparent', 
+                              border: 'none', 
+                              color: 'black', 
+                              fontWeight: 700
                             }}
                             onClick={() => {
                                 const message = settings.btn_simulate_msg || "Olá! Vi o site da Brito Motors e gostaria de simular um financiamento para o meu veículo.";
@@ -115,7 +136,9 @@ const Navbar = ({ setSelectedBrand }) => {
                     >
                         <div className="mobile-sidebar-header">
                             <div className="logo">
-                                {settings.logo_url ? (
+                                {settings.logo_url_mobile ? (
+                                    <img src={settings.logo_url_mobile} alt="logo mobile" style={{ height: '35px' }} />
+                                ) : settings.logo_url ? (
                                     <img src={settings.logo_url} alt="logo" style={{ height: '30px' }} />
                                 ) : (
                                     <div dangerouslySetInnerHTML={{ __html: settings.logo_text ? settings.logo_text.replace('Motors', '<span>Motors</span>') : 'Brito <span>Motors</span>' }} />
@@ -130,8 +153,8 @@ const Navbar = ({ setSelectedBrand }) => {
                                     href={item.href}
                                     className="mobile-nav-link"
                                     onClick={(e) => {
-                                        if (item.onClick) item.onClick(e);
-                                        setIsOpen(false);
+                                      if (item.onClick) item.onClick(e);
+                                      setIsOpen(false);
                                     }}
                                 >
                                     {item.name}

@@ -16,6 +16,7 @@ export default function SiteSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [uploadingLogoMobile, setUploadingLogoMobile] = useState(false);
   const [uploadingHero, setUploadingHero] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -35,8 +36,9 @@ export default function SiteSettings() {
     const file = e.target.files[0];
     if (!file) return;
     if (key === 'logo_url') setUploadingLogo(true);
+    else if (key === 'logo_url_mobile') setUploadingLogoMobile(true);
     else setUploadingHero(true);
-    const folder = key === 'logo_url' ? 'logo' : 'hero';
+    const folder = key.includes('logo') ? 'logo' : 'hero';
     const fileName = `${folder}/${Date.now()}_${file.name.replace(/\s/g, '_')}`;
     const { error } = await supabase.storage.from('images').upload(fileName, file, { upsert: true });
     if (!error) {
@@ -44,6 +46,7 @@ export default function SiteSettings() {
       handleChange(key, urlData.publicUrl);
     }
     setUploadingLogo(false);
+    setUploadingLogoMobile(false);
     setUploadingHero(false);
   };
 
@@ -86,7 +89,7 @@ export default function SiteSettings() {
             <input type="number" step="0.1" min="0.5" max="3" value={settings.logo_size || '1'} onChange={e => handleChange('logo_size', e.target.value)} style={inputStyle} />
           </div>
           <div>
-            <label style={labelStyle}>PNG da Logo (opcional)</label>
+            <label style={labelStyle}>PNG da Logo (Desktop)</label>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <input value={settings.logo_url || ''} onChange={e => handleChange('logo_url', e.target.value)} placeholder="URL ou faça upload" style={{ ...inputStyle, flex: 1 }} />
               <label style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px', padding: '10px 12px', color: '#D4AF37', cursor: 'pointer', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
@@ -95,6 +98,17 @@ export default function SiteSettings() {
               </label>
             </div>
             {settings.logo_url && <img src={settings.logo_url} alt="logo" style={{ height: '40px', objectFit: 'contain', marginTop: '8px' }} />}
+          </div>
+          <div>
+            <label style={labelStyle}>PNG da Logo (Celular - Opcional)</label>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <input value={settings.logo_url_mobile || ''} onChange={e => handleChange('logo_url_mobile', e.target.value)} placeholder="URL ou faça upload" style={{ ...inputStyle, flex: 1 }} />
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px', padding: '10px 12px', color: '#D4AF37', cursor: 'pointer', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
+                <Upload size={14} />{uploadingLogoMobile ? '...' : 'PNG'}
+                <input type="file" accept="image/png,image/*" onChange={e => handleUpload(e, 'logo_url_mobile')} style={{ display: 'none' }} />
+              </label>
+            </div>
+            {settings.logo_url_mobile && <img src={settings.logo_url_mobile} alt="logo mobile" style={{ height: '40px', objectFit: 'contain', marginTop: '8px' }} />}
           </div>
         </div>
       </div>
@@ -157,7 +171,7 @@ export default function SiteSettings() {
           ].map(({ key, label }) => (
             <div key={key}>
               <label style={labelStyle}>{label}</label>
-              <input value={settings[key] || ''} onChange={e => handleChange(key, e.target.value)} style={inputStyle} />
+              <input value={settings[key] || ''} onChange={e => handleChange('btn_simulate', e.target.value)} style={inputStyle} />
             </div>
           ))}
         </div>
