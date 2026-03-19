@@ -18,6 +18,7 @@ export default function SiteSettings() {
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [uploadingLogoMobile, setUploadingLogoMobile] = useState(false);
   const [uploadingHero, setUploadingHero] = useState(false);
+  const [uploadingHeroMobile, setUploadingHeroMobile] = useState(false);
   const [saved, setSaved] = useState(false);
 
   const fetchSettings = async () => {
@@ -37,6 +38,7 @@ export default function SiteSettings() {
     if (!file) return;
     if (key === 'logo_url') setUploadingLogo(true);
     else if (key === 'logo_url_mobile') setUploadingLogoMobile(true);
+    else if (key === 'banner_url_mobile') setUploadingHeroMobile(true);
     else setUploadingHero(true);
     const folder = key.includes('logo') ? 'logo' : 'hero';
     const fileName = `${folder}/${Date.now()}_${file.name.replace(/\s/g, '_')}`;
@@ -48,6 +50,7 @@ export default function SiteSettings() {
     setUploadingLogo(false);
     setUploadingLogoMobile(false);
     setUploadingHero(false);
+    setUploadingHeroMobile(false);
   };
 
   const handleSave = async () => {
@@ -140,6 +143,17 @@ export default function SiteSettings() {
             </div>
             {settings.hero_bg && <img src={settings.hero_bg} alt="hero bg" style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px', marginTop: '10px' }} />}
           </div>
+          <div style={{ gridColumn: '1 / -1' }}>
+            <label style={labelStyle}>Banner do Hero (Celular - Estático)</label>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <input value={settings.banner_url_mobile || ''} onChange={e => handleChange('banner_url_mobile', e.target.value)} placeholder="URL da imagem ou faça upload" style={{ ...inputStyle, flex: 1 }} />
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px', padding: '10px 12px', color: '#D4AF37', cursor: 'pointer', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
+                <Upload size={14} />{uploadingHeroMobile ? '...' : 'Upload'}
+                <input type="file" accept="image/*" onChange={e => handleUpload(e, 'banner_url_mobile')} style={{ display: 'none' }} />
+              </label>
+            </div>
+            {settings.banner_url_mobile && <img src={settings.banner_url_mobile} alt="hero mobile bg" style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px', marginTop: '10px' }} />}
+          </div>
         </div>
       </div>
 
@@ -175,7 +189,7 @@ export default function SiteSettings() {
           ].map(({ key, label }) => (
             <div key={key}>
               <label style={labelStyle}>{label}</label>
-              <input value={settings[key] || ''} onChange={e => handleChange('btn_simulate', e.target.value)} style={inputStyle} />
+              <input value={settings[key] || ''} onChange={e => handleChange(key, e.target.value)} style={inputStyle} />
             </div>
           ))}
         </div>

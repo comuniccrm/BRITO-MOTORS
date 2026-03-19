@@ -11,6 +11,14 @@ const Hero = () => {
   
   const scrollRef = useRef(null);
   const [isInteracting, setIsInteracting] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   // Set first car as active when cars are loaded
   useEffect(() => {
@@ -64,30 +72,51 @@ const Hero = () => {
     <section className="hero" style={{ position: 'relative', height: '85vh', overflow: 'hidden' }}>
       {/* Background with Overlay and Cinematic Zoom */}
       <AnimatePresence mode='wait'>
-        <motion.div
-           key={activeCar.id}
-          initial={{ opacity: 0, scale: 1.05, x: -30 }}
-          animate={{ opacity: 1, scale: 1.12, x: 30 }}
-          exit={{ opacity: 0 }}
-          transition={{ 
-            opacity: { duration: 1.5, ease: "easeInOut" },
-            scale: { duration: 8, ease: "linear" },
-            x: { duration: 8, ease: "linear" }
-          }}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.85) 15%, rgba(0,0,0,0.15) 85%), url(${settings.hero_bg || activeCar.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            zIndex: -1,
-            transformOrigin: 'center',
-            willChange: 'transform'
-          }}
-        />
+        {isMobile && settings.banner_url_mobile ? (
+          <motion.div
+            key="mobile-banner"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url(${settings.banner_url_mobile})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              zIndex: -1
+            }}
+          />
+        ) : (
+          <motion.div
+            key={activeCar.id}
+            initial={{ opacity: 0, scale: 1.05, x: -30 }}
+            animate={{ opacity: 1, scale: 1.12, x: 30 }}
+            exit={{ opacity: 0 }}
+            transition={{ 
+              opacity: { duration: 1.5, ease: "easeInOut" },
+              scale: { duration: 8, ease: "linear" },
+              x: { duration: 8, ease: "linear" }
+            }}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.85) 15%, rgba(0,0,0,0.15) 85%), url(${settings.hero_bg || activeCar.image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              zIndex: -1,
+              transformOrigin: 'center',
+              willChange: 'transform'
+            }}
+          />
+        )}
       </AnimatePresence>
 
       <div style={{ 
