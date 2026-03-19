@@ -143,6 +143,18 @@ export default function SiteSettings() {
             </div>
             {settings.hero_bg && <img src={settings.hero_bg} alt="hero bg" style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px', marginTop: '10px' }} />}
           </div>
+          <div>
+            <label style={labelStyle}>Texto Alternado 1 (Blur Effect)</label>
+            <input value={settings.hero_text_1 || ''} onChange={e => handleChange('hero_text_1', e.target.value)} placeholder="Frase 1" style={inputStyle} />
+          </div>
+          <div>
+            <label style={labelStyle}>Texto Alternado 2 (Blur Effect)</label>
+            <input value={settings.hero_text_2 || ''} onChange={e => handleChange('hero_text_2', e.target.value)} placeholder="Frase 2" style={inputStyle} />
+          </div>
+          <div style={{ gridColumn: '1 / -1' }}>
+            <label style={labelStyle}>Texto Alternado 3 (Blur Effect)</label>
+            <input value={settings.hero_text_3 || ''} onChange={e => handleChange('hero_text_3', e.target.value)} placeholder="Frase 3" style={inputStyle} />
+          </div>
           <div style={{ gridColumn: '1 / -1' }}>
             <label style={labelStyle}>Banner do Hero (Celular - Estático)</label>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -189,7 +201,7 @@ export default function SiteSettings() {
           ].map(({ key, label }) => (
             <div key={key}>
               <label style={labelStyle}>{label}</label>
-              <input value={settings[key] || ''} onChange={e => handleChange(key, e.target.value)} style={inputStyle} />
+              <input value={settings[key] || ''} onChange={e => handleChange('btn_see_car', e.target.value)} style={inputStyle} />
             </div>
           ))}
         </div>

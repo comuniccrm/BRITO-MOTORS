@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import BorderGlow from './BorderGlow';
+import BlurText from './BlurText';
 import { useSettings } from '../hooks/useSettings.jsx';
 import { useCars } from '../hooks/useCars';
 
@@ -12,6 +13,21 @@ const Hero = () => {
   const scrollRef = useRef(null);
   const [isInteracting, setIsInteracting] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [textIndex, setTextIndex] = useState(0);
+
+  const heroTexts = [
+    settings.hero_text_1,
+    settings.hero_text_2,
+    settings.hero_text_3
+  ].filter(t => t && t.trim() !== '');
+
+  useEffect(() => {
+    if (heroTexts.length <= 1) return;
+    const interval = setInterval(() => {
+      setTextIndex((prev) => (prev + 1) % heroTexts.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [heroTexts]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -116,6 +132,29 @@ const Hero = () => {
           />
         )}
       </AnimatePresence>
+
+      {/* Alternating Texts Overlay */}
+      {heroTexts.length > 0 && (
+        <div style={{
+          position: 'absolute',
+          top: '40%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '90%',
+          textAlign: 'center',
+          zIndex: 5,
+          pointerEvents: 'none'
+        }}>
+          <BlurText
+            key={textIndex}
+            text={heroTexts[textIndex]}
+            delay={150}
+            animateBy="words"
+            direction="top"
+            className="hero-blur-text"
+          />
+        </div>
+      )}
 
       <div style={{ 
         position: 'absolute',
@@ -222,6 +261,26 @@ const Hero = () => {
           .hero-btn-primary, .hero-btn-secondary {
             width: 100% !important;
             justify-content: center;
+          }
+          .hero-blur-text {
+            font-size: 2.2rem !important;
+            line-height: 1.2;
+            color: #fff;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(0,0,0,0.8);
+          }
+        }
+        @media (min-width: 769px) {
+          .hero-blur-text {
+            font-size: 4.5rem !important;
+            line-height: 1.1;
+            color: #fff;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            text-shadow: 0 0 40px rgba(0,0,0,0.8);
           }
         }
       `}} />
