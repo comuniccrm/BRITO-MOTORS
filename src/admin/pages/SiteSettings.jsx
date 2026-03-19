@@ -101,14 +101,18 @@ export default function SiteSettings() {
           </div>
           <div>
             <label style={labelStyle}>PNG da Logo (Celular - Opcional)</label>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <input value={settings.logo_url_mobile || ''} onChange={e => handleChange('logo_url_mobile', e.target.value)} placeholder="URL ou faça upload" style={{ ...inputStyle, flex: 1 }} />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px', alignItems: 'center' }}>
+              <input value={settings.logo_url_mobile || ''} onChange={e => handleChange('logo_url_mobile', e.target.value)} placeholder="URL ou faça upload" style={inputStyle} />
               <label style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px', padding: '10px 12px', color: '#D4AF37', cursor: 'pointer', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
                 <Upload size={14} />{uploadingLogoMobile ? '...' : 'PNG'}
                 <input type="file" accept="image/png,image/*" onChange={e => handleUpload(e, 'logo_url_mobile')} style={{ display: 'none' }} />
               </label>
             </div>
             {settings.logo_url_mobile && <img src={settings.logo_url_mobile} alt="logo mobile" style={{ height: '40px', objectFit: 'contain', marginTop: '8px' }} />}
+          </div>
+          <div>
+            <label style={labelStyle}>Tamanho da Logo Celular (1 = normal)</label>
+            <input type="number" step="0.1" min="0.5" max="3" value={settings.logo_size_mobile || '1'} onChange={e => handleChange('logo_size_mobile', e.target.value)} style={inputStyle} />
           </div>
         </div>
       </div>

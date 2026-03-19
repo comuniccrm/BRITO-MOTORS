@@ -52,7 +52,7 @@ const Navbar = ({ setSelectedBrand }) => {
                             alt={settings.logo_text || settings.site_name} 
                             className="nav-logo mobile-logo"
                             style={{ 
-                                height: `${(settings.logo_size || 1) * 40}px`, 
+                                height: `${(settings.logo_size_mobile || settings.logo_size || 1) * 40}px`, 
                                 maxHeight: scrolled ? '50px' : '80px', 
                                 objectFit: 'contain',
                                 transition: 'all 0.3s'
@@ -137,7 +137,11 @@ const Navbar = ({ setSelectedBrand }) => {
                         <div className="mobile-sidebar-header">
                             <div className="logo">
                                 {settings.logo_url_mobile ? (
-                                    <img src={settings.logo_url_mobile} alt="logo mobile" style={{ height: '35px' }} />
+                                    <img 
+                                        src={settings.logo_url_mobile} 
+                                        alt="logo mobile" 
+                                        style={{ height: `${(settings.logo_size_mobile || settings.logo_size || 1) * 35}px` }} 
+                                    />
                                 ) : settings.logo_url ? (
                                     <img src={settings.logo_url} alt="logo" style={{ height: '30px' }} />
                                 ) : (

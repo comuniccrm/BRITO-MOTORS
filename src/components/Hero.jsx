@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import BorderGlow from './BorderGlow';
 import { useSettings } from '../hooks/useSettings.jsx';
@@ -9,12 +9,34 @@ const Hero = () => {
   const [activeCar, setActiveCar] = useState(null);
   const settings = useSettings();
   
+  const scrollRef = useRef(null);
+  const [isInteracting, setIsInteracting] = useState(false);
+  
   // Set first car as active when cars are loaded
   useEffect(() => {
     if (CARS.length > 0 && !activeCar) {
       setActiveCar(CARS[0]);
     }
   }, [CARS, activeCar]);
+
+  // Handle auto-scroll with interaction support
+  useEffect(() => {
+    let animationFrame;
+    const scroll = () => {
+      if (scrollRef.current && !isInteracting) {
+        scrollRef.current.scrollLeft += 0.8; // Speed factor
+        
+        // Loop reset logic: if we reach halfway (duplicated content), jump back to start
+        if (scrollRef.current.scrollLeft >= (scrollRef.current.scrollWidth / 2)) {
+          scrollRef.current.scrollLeft = 0;
+        }
+      }
+      animationFrame = requestAnimationFrame(scroll);
+    };
+    
+    animationFrame = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isInteracting, CARS]);
 
   if (loading || !activeCar) {
     return <div style={{ height: '80vh', background: '#050505' }} />;
@@ -38,7 +60,7 @@ const Hero = () => {
       {/* Background with Overlay and Cinematic Zoom */}
       <AnimatePresence mode='wait'>
         <motion.div
-          key={activeCar.id}
+           key={activeCar.id}
           initial={{ opacity: 0, scale: 1.05, x: -30 }}
           animate={{ opacity: 1, scale: 1.12, x: 30 }}
           exit={{ opacity: 0 }}
@@ -75,27 +97,28 @@ const Hero = () => {
           overflow: 'hidden',
           position: 'relative'
         }}>
-          <motion.div 
+          <div 
+            ref={scrollRef}
             className="hero-carousel-list" 
-            animate={{ x: [0, -1888] }} // Updated math: (minWidth 220 + gap 16) * 8 = 1888
-            transition={{
-              x: {
-                repeat: Infinity,
-                repeatType: "loop",
-                duration: 40,
-                ease: "linear",
-              },
-            }}
+            onMouseEnter={() => setIsInteracting(true)}
+            onMouseLeave={() => setIsInteracting(false)}
+            onTouchStart={() => setIsInteracting(true)}
+            onTouchEnd={() => setIsInteracting(false)}
             style={{ 
               display: 'flex', 
               gap: '1rem', 
               paddingBottom: '0',
               maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
               WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
-              width: 'max-content'
+              width: '100%',
+              overflowX: 'auto',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              WebkitOverflowScrolling: 'touch',
+              cursor: 'grab'
             }}
           >
-            {[...CARS.slice(0, 8), ...CARS.slice(0, 8)].map((car, index) => (
+            {[...CARS, ...CARS].map((car, index) => (
               <motion.div
                 key={`${car.id}-${index}`}
                 whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
@@ -144,13 +167,17 @@ const Hero = () => {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
         .hero-carousel-list::-webkit-scrollbar {
           display: none;
+        }
+        .hero-carousel-list {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
         @media (max-width: 768px) {
           .hero-carousel-list {
