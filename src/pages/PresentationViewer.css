@@ -1,0 +1,68 @@
+.presentation-container {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+/* Hide scrollbar for seamless immersive experience */
+.presentation-container::-webkit-scrollbar {
+  display: none;
+}
+.presentation-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.presentation-header {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.presentation-logo {
+  height: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.presentation-logo-text {
+  color: #D4AF37;
+  font-size: 1.5rem;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+.presentation-feed {
+  width: 100%;
+  height: auto;
+}
+
+.presentation-slide {
+  width: 100vw;
+  height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #050505;
+  position: relative;
+}
+
+.presentation-media {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* ensures whole image/video is visible without crop */
+}

@@ -4,7 +4,8 @@ import { useSettings } from '../hooks/useSettings';
 import CarManager from './pages/CarManager';
 import BrandManager from './pages/BrandManager';
 import SiteSettings from './pages/SiteSettings';
-import { Car, Tag, Settings, LogOut, LayoutDashboard } from 'lucide-react';
+import PresentationManager from './pages/PresentationManager';
+import { Car, Tag, Settings, LogOut, LayoutDashboard, MonitorPlay } from 'lucide-react';
 
 export default function AdminLayout() {
   const { logout, user } = useAuth();
@@ -16,6 +17,7 @@ export default function AdminLayout() {
   const navItems = [
     { id: 'cars', label: 'Estoque', icon: Car },
     { id: 'brands', label: 'Marcas', icon: Tag },
+    { id: 'presentation', label: 'Apresentação VIP', icon: MonitorPlay },
     { id: 'settings', label: 'Configurações', icon: Settings },
   ];
 
@@ -108,6 +110,7 @@ export default function AdminLayout() {
         {activeTab === 'cars' && <CarManager />}
         {activeTab === 'brands' && <BrandManager />}
         {activeTab === 'settings' && <SiteSettings />}
+        {activeTab === 'presentation' && <PresentationManager />}
       </main>
     </div>
   );

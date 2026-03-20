@@ -7,12 +7,15 @@ import AdminApp from './admin/AdminApp.jsx'
 import { AuthProvider } from './admin/AuthContext.jsx'
 import { SettingsProvider } from './hooks/useSettings.jsx'
 
+import PresentationViewer from './pages/PresentationViewer.jsx'
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <SettingsProvider>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/apresentacao" element={<PresentationViewer />} />
           <Route path="/admin/*" element={
             <AuthProvider>
               <AdminApp />
