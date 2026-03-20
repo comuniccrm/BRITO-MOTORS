@@ -26,10 +26,19 @@ function App() {
   const whatsappNumber = settings.whatsapp_number || '5511995819077';
 
   const getSafeMapUrl = () => {
-    const defaultUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.0512270908!2d-46.6945890251!3d-23.6025134789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce50cb680a6711%3A0x1c8b323c9603058a!2sAv.%20das%20Na%C3%A7%C3%B5es%20Unidas%2C%2012551%20-%20Brooklin%20Novo%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2004578-903!5e0!3m2!1spt-BR!2sbr!4v1710688000000!5m2!1spt-BR!2sbr";
-    const mapped = settings.map_iframe_url;
+    const defaultUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3737.686765950523!2d-54.6360173!3d-20.478054600000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9486e76a6a4f325f%3A0x2892ad74e5665701!2sBrito%20Motors!5e0!3m2!1spt-BR!2sbr!4v1774024891583!5m2!1spt-BR!2sbr";
+    let mapped = settings.map_iframe_url;
     
     if (!mapped) return defaultUrl;
+
+    // Se o usuário colou o código do <iframe> INTEIRO, extraia apenas o src="..."
+    if (mapped.includes('<iframe') && mapped.includes('src="')) {
+      const match = mapped.match(/src="([^"]+)"/);
+      if (match && match[1]) {
+        mapped = match[1];
+      }
+    }
+
     if (mapped.includes('embed')) return mapped;
     
     // Check if it's a URL but not an embed URL
