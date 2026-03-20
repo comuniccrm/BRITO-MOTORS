@@ -48,8 +48,7 @@ function App() {
         <Hero />
 
         {/* Brand Ribbon - Harmonic Symbols Only */}
-        <section className="brand-ribbon" style={{ 
-          background: 'var(--primary-gold)',
+        <section className="brand-ribbon glass-effect" style={{ 
           padding: '12px 0', 
           borderTop: 'none', 
           borderLeft: 'none', 
@@ -95,11 +94,11 @@ function App() {
                   initial={false}
                   animate={{ 
                     filter: selectedBrand === brand.name 
-                      ? 'brightness(0)' 
-                      : 'brightness(0) opacity(0.6)'
+                      ? 'grayscale(0) brightness(1.2)' 
+                      : 'grayscale(1) brightness(0.7) contrast(1.2)'
                   }}
                   whileHover={{ 
-                    filter: 'brightness(0)',
+                    filter: 'grayscale(0) brightness(1.2)',
                     opacity: 1
                   }}
                   style={{ 
