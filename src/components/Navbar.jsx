@@ -55,8 +55,7 @@ const Navbar = ({ setSelectedBrand }) => {
                                 height: `${(settings.logo_size_mobile || settings.logo_size || 1) * 40}px`, 
                                 maxHeight: scrolled ? '50px' : '80px', 
                                 objectFit: 'contain',
-                                transition: 'all 0.3s',
-                                filter: 'grayscale(1) brightness(1.2) contrast(1.1)'
+                                transition: 'all 0.3s'
                             }} 
                         />
                     ) : settings.logo_url ? (
@@ -68,8 +67,7 @@ const Navbar = ({ setSelectedBrand }) => {
                                 height: `${(settings.logo_size || 1) * 40}px`, 
                                 maxHeight: scrolled ? '50px' : '80px', 
                                 objectFit: 'contain',
-                                transition: 'all 0.3s',
-                                filter: 'grayscale(1) brightness(1.2) contrast(1.1)'
+                                transition: 'all 0.3s'
                             }} 
                         />
                     ) : (

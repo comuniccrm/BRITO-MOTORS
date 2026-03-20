@@ -412,8 +412,7 @@ function App() {
                   maxHeight: '100px',
                   objectFit: 'contain',
                   margin: '0 auto', // Explicitly center the block image
-                  display: 'block',
-                  filter: 'grayscale(1) brightness(1.2) contrast(1.1)'
+                  display: 'block'
                 }} 
               />
             ) : (
