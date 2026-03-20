@@ -25,7 +25,7 @@ const Hero = () => {
     if (heroTexts.length <= 1) return;
     const interval = setInterval(() => {
       setTextIndex((prev) => (prev + 1) % heroTexts.length);
-    }, 3500);
+    }, 2500);
     return () => clearInterval(interval);
   }, [heroTexts]);
 
