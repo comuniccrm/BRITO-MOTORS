@@ -373,8 +373,8 @@ const SiteSettings = () => {
           </div>
 
           <div style={{ marginTop: '20px' }}>
-            <label style={labelStyle}>URL do Google Maps (Link apenas, o conteúdo do 'src')</label>
-            <input value={settings.map_iframe_url || ''} onChange={e => handleChange('map_iframe_url', e.target.value)} style={inputStyle} />
+            <label style={labelStyle}>Mapa (Pode colar o link do Google Maps, código Embed, ou apenas digitar o Endereço/Nome da Loja!)</label>
+            <input value={settings.map_iframe_url || ''} onChange={e => handleChange('map_iframe_url', e.target.value)} placeholder="Ex: Brito Motors, Campo Grande - MS" style={inputStyle} />
           </div>
         </div>
       </div>
