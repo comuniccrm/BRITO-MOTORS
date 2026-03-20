@@ -62,12 +62,12 @@
 .pc-inside {
   position: relative;
   width: 100%;
-  aspect-ratio: 3/4;
+  /* Removed aspect-ratio to allow dynamic height based on image */
   background: var(--inner-gradient);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 0; /* Remove padding for edge-to-edge photo */
+  padding: 0;
 }
 
 /* Shine & Glare Effects (The "Lux" system) */
@@ -139,21 +139,20 @@
 
 /* Content Layout */
 .pc-avatar-content {
-  position: absolute;
-  inset: 0;
+  position: relative; /* Changed from absolute to allow image to dictate height */
   display: flex;
   flex-direction: column;
   z-index: 10;
+  width: 100%;
 }
 
 .avatar {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
-  height: 100%;
+  height: auto;
+  min-height: 200px; /* Base height in case image takes time to load */
   object-fit: cover;
-  object-position: center;
+  display: block;
   transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
