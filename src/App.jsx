@@ -315,34 +315,34 @@ function App() {
               padding: '0 20px'
             }}>
               <ProfileCard 
-                name="Ricardo Santos"
-                title="Proprietário de Range Rover Sport"
-                handle="ricardo.brito"
+                name={settings.cliente_1_nome || "Ricardo Santos"}
+                title={settings.cliente_1_titulo || "Proprietário de Range Rover Sport"}
+                handle={settings.cliente_1_nome ? settings.cliente_1_nome.toLowerCase().replace(/\s+/g, '.') : "ricardo.brito"}
                 status="Cliente VIP"
                 contactText="WhatsApp"
-                avatarUrl="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop"
+                avatarUrl={settings.cliente_1_foto || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop"}
                 innerGradient="linear-gradient(145deg, #1a1a1a 0%, #d4af3722 100%)"
                 behindGlowColor="rgba(212, 175, 55, 0.3)"
                 className="testimonial-card"
               />
               <ProfileCard 
-                name="Juliana Lima"
-                title="Proprietária de Porsche 911"
-                handle="juli_motors"
+                name={settings.cliente_2_nome || "Juliana Lima"}
+                title={settings.cliente_2_titulo || "Proprietária de Porsche 911"}
+                handle={settings.cliente_2_nome ? settings.cliente_2_nome.toLowerCase().replace(/\s+/g, '.') : "juli_motors"}
                 status="Membro Platinum"
                 contactText="WhatsApp"
-                avatarUrl="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop"
+                avatarUrl={settings.cliente_2_foto || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop"}
                 innerGradient="linear-gradient(145deg, #1a1a1a 0%, #d4af3722 100%)"
                 behindGlowColor="rgba(212, 175, 55, 0.3)"
                 className="testimonial-card"
               />
               <ProfileCard 
-                name="Marcos Oliveira"
-                title="Proprietário de Mercedes G63"
-                handle="oliveira_amg"
+                name={settings.cliente_3_nome || "Marcos Oliveira"}
+                title={settings.cliente_3_titulo || "Proprietário de Mercedes G63"}
+                handle={settings.cliente_3_nome ? settings.cliente_3_nome.toLowerCase().replace(/\s+/g, '.') : "oliveira_amg"}
                 status="Colecionador"
                 contactText="WhatsApp"
-                avatarUrl="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop"
+                avatarUrl={settings.cliente_3_foto || "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop"}
                 innerGradient="linear-gradient(145deg, #1a1a1a 0%, #d4af3722 100%)"
                 behindGlowColor="rgba(212, 175, 55, 0.3)"
                 className="testimonial-card"

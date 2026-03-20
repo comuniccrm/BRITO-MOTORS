@@ -23,7 +23,16 @@ const SiteSettings = () => {
     banner_url_mobile: '', // New field for mobile static banner
     whatsapp_number: '',
     primary_color: '#D4AF37',
-    footer_text: ''
+    footer_text: '',
+    cliente_1_foto: '',
+    cliente_1_nome: 'Ricardo Santos',
+    cliente_1_titulo: 'Proprietário de Range Rover Sport',
+    cliente_2_foto: '',
+    cliente_2_nome: 'Juliana Lima',
+    cliente_2_titulo: 'Proprietária de Porsche 911',
+    cliente_3_foto: '',
+    cliente_3_nome: 'Marcos Oliveira',
+    cliente_3_titulo: 'Proprietário de Mercedes G63'
   });
 
   useEffect(() => {
@@ -273,6 +282,49 @@ const SiteSettings = () => {
               </label>
             </div>
           </div>
+        </div>
+
+        {/* Clientes Satisfeitos Section */}
+        <div style={sectionStyle}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+            <Layout className="text-primary-gold" size={24} />
+            <h2 style={{ margin: 0, fontSize: '1.25rem' }}>Clientes Satisfeitos</h2>
+          </div>
+
+          {[1, 2, 3].map(num => (
+            <div key={num} style={{ marginBottom: '20px', padding: '15px', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <h3 style={{ fontSize: '1rem', color: 'var(--primary-gold)', marginBottom: '15px' }}>Cliente {num}</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px', marginBottom: '15px' }}>
+                <div>
+                  <label style={labelStyle}>Nome</label>
+                  <input value={settings[`cliente_${num}_nome`] || ''} onChange={e => handleChange(`cliente_${num}_nome`, e.target.value)} style={inputStyle} />
+                </div>
+                <div>
+                  <label style={labelStyle}>Título / Descrição</label>
+                  <input value={settings[`cliente_${num}_titulo`] || ''} onChange={e => handleChange(`cliente_${num}_titulo`, e.target.value)} style={inputStyle} />
+                </div>
+              </div>
+              <div style={{ marginBottom: '10px' }}>
+                <label style={labelStyle}>Foto do Cliente</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                  {settings[`cliente_${num}_foto`] && (
+                    <img 
+                      src={settings[`cliente_${num}_foto`]} 
+                      alt={`Cliente ${num} Preview`} 
+                      style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--primary-gold)' }} 
+                    />
+                  )}
+                  <div style={{ flex: 1 }}>
+                    <input value={settings[`cliente_${num}_foto`] || ''} readOnly style={{...inputStyle, marginBottom: 0}} />
+                  </div>
+                  <label className="admin-btn-secondary" style={{ cursor: 'pointer', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '5px', padding: '8px 15px' }}>
+                    <Upload size={18} /> Upload
+                    <input type="file" hidden onChange={e => handleFileUpload(e, `cliente_${num}_foto`)} />
+                  </label>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Contact & Footer */}
