@@ -207,8 +207,25 @@ export default function PresentationManager() {
                 <div style={{ fontSize: '0.9rem', color: '#aaa', textTransform: 'uppercase', marginBottom: '5px' }}>
                   {media.type === 'video' ? '🎬 Vídeo' : '📸 Imagem'}
                 </div>
-                <div style={{ fontSize: '0.85rem', color: '#666', wordBreak: 'break-all' }}>
+                <div style={{ fontSize: '0.85rem', color: '#666', wordBreak: 'break-all', marginBottom: '10px' }}>
                   {media.url}
+                </div>
+                
+                {/* Tamanho/Estilo de Exibição */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '0.8rem', color: '#888' }}>Como exibir na TV:</span>
+                  <select 
+                    value={media.displayMode || 'contain'}
+                    onChange={(e) => {
+                      const newList = [...mediaList];
+                      newList[index].displayMode = e.target.value;
+                      setMediaList(newList);
+                    }}
+                    style={{ background: 'rgba(0,0,0,0.5)', color: '#fff', border: '1px solid #444', padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem' }}
+                  >
+                    <option value="contain">🖼️ Ajustar ao Centro (Ver Tudo)</option>
+                    <option value="cover">✂️ Preencher Tela (Cortar Bordas)</option>
+                  </select>
                 </div>
               </div>
 

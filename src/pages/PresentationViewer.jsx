@@ -80,6 +80,7 @@ export default function PresentationViewer() {
               <video 
                 src={media.url} 
                 className="presentation-media"
+                style={{ objectFit: media.displayMode || 'contain' }}
                 controls 
                 autoPlay={index === 0}
                 muted={index === 0} 
@@ -90,6 +91,7 @@ export default function PresentationViewer() {
               <img 
                 src={media.url} 
                 className="presentation-media"
+                style={{ objectFit: media.displayMode || 'contain' }}
                 alt={`Slide ${index + 1}`} 
               />
             )}
