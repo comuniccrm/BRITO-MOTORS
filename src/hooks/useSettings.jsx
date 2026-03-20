@@ -39,6 +39,15 @@ export const SettingsProvider = ({ children }) => {
             return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : null;
           };
           // Apply CSS custom properties for theming
+          if (obj.favicon_url) {
+            let link = document.querySelector("link[rel~='icon']");
+            if (!link) {
+              link = document.createElement('link');
+              link.rel = 'icon';
+              document.head.appendChild(link);
+            }
+            link.href = obj.favicon_url;
+          }
           if (obj.primary_color) {
             document.documentElement.style.setProperty('--primary-gold', obj.primary_color);
             const rgb = hexToRgb(obj.primary_color);

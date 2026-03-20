@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from './AuthContext';
+import { useSettings } from '../hooks/useSettings';
 import CarManager from './pages/CarManager';
 import BrandManager from './pages/BrandManager';
 import SiteSettings from './pages/SiteSettings';
@@ -8,6 +9,9 @@ import { Car, Tag, Settings, LogOut, LayoutDashboard } from 'lucide-react';
 export default function AdminLayout() {
   const { logout, user } = useAuth();
   const [activeTab, setActiveTab] = useState('cars');
+  
+  // This headless hook call ensures CSS vars and favicon are applied to the Admin area too!
+  useSettings();
 
   const navItems = [
     { id: 'cars', label: 'Estoque', icon: Car },

@@ -208,6 +208,19 @@ const SiteSettings = () => {
                 <input type="number" value={settings.logo_size_mobile || '100'} onChange={e => handleChange('logo_size_mobile', e.target.value)} style={inputStyle} />
               </div>
             </div>
+
+            <div>
+              <label style={labelStyle}>Favicon (Ícone da Aba do Navegador)</label>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <input value={settings.favicon_url || ''} readOnly style={inputStyle} placeholder="16x16 / 32x32" />
+                <label className="admin-btn-secondary" style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                  <Upload size={18} />
+                  Upload
+                  <input type="file" hidden onChange={e => handleFileUpload(e, 'favicon_url')} />
+                </label>
+              </div>
+              {settings.favicon_url && <img src={settings.favicon_url} alt="Favicon Preview" style={{ width: '32px', height: '32px', objectFit: 'contain', marginTop: '10px', background: '#ccc', padding: '2px', borderRadius: '4px' }} />}
+            </div>
           </div>
         </div>
 
