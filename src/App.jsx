@@ -95,7 +95,7 @@ function App() {
                   animate={{ 
                     filter: selectedBrand === brand.name 
                       ? 'grayscale(0) brightness(1.2)' 
-                      : 'grayscale(1) brightness(0.7) contrast(1.2)'
+                      : 'brightness(0) invert(71%) sepia(37%) saturate(674%) hue-rotate(3deg) brightness(93%) contrast(91%)'
                   }}
                   whileHover={{ 
                     filter: 'grayscale(0) brightness(1.2)',
