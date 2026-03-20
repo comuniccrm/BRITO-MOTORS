@@ -32,7 +32,12 @@ const SiteSettings = () => {
     cliente_2_titulo: 'Proprietária de Porsche 911',
     cliente_3_foto: '',
     cliente_3_nome: 'Marcos Oliveira',
-    cliente_3_titulo: 'Proprietário de Mercedes G63'
+    cliente_3_titulo: 'Proprietário de Mercedes G63',
+    contact_address: 'Av. das Nações Unidas, 12551 - SP',
+    contact_instagram: 'https://instagram.com',
+    contact_facebook: 'https://facebook.com',
+    contact_email: 'contato@britomotors.com.br',
+    map_iframe_url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.0512270908!2d-46.6945890251!3d-23.6025134789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce50cb680a6711%3A0x1c8b323c9603058a!2sAv.%20das%20Na%C3%A7%C3%B5es%20Unidas%2C%2012551%20-%20Brooklin%20Novo%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2004578-903!5e0!3m2!1spt-BR!2sbr!4v1710688000000!5m2!1spt-BR!2sbr'
   });
 
   useEffect(() => {
@@ -343,6 +348,33 @@ const SiteSettings = () => {
               <label style={labelStyle}>Texto do Rodapé</label>
               <input value={settings.footer_text || ''} onChange={e => handleChange('footer_text', e.target.value)} style={inputStyle} />
             </div>
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginTop: '20px' }}>
+            <div>
+              <label style={labelStyle}>Endereço Físico</label>
+              <input value={settings.contact_address || ''} onChange={e => handleChange('contact_address', e.target.value)} style={inputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Email de Contato</label>
+              <input value={settings.contact_email || ''} onChange={e => handleChange('contact_email', e.target.value)} style={inputStyle} />
+            </div>
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginTop: '20px' }}>
+            <div>
+              <label style={labelStyle}>Link do Instagram</label>
+              <input value={settings.contact_instagram || ''} onChange={e => handleChange('contact_instagram', e.target.value)} style={inputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Link do Facebook</label>
+              <input value={settings.contact_facebook || ''} onChange={e => handleChange('contact_facebook', e.target.value)} style={inputStyle} />
+            </div>
+          </div>
+
+          <div style={{ marginTop: '20px' }}>
+            <label style={labelStyle}>URL do Google Maps (Link apenas, o conteúdo do 'src')</label>
+            <input value={settings.map_iframe_url || ''} onChange={e => handleChange('map_iframe_url', e.target.value)} style={inputStyle} />
           </div>
         </div>
       </div>

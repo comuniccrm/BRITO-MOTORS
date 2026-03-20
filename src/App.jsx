@@ -362,23 +362,25 @@ function App() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                   <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                     <MapPin size={20} strokeWidth={1.5} className="gold-text" />
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 300 }}>Av. das Nações Unidas, 12551 - SP</p>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 300 }}>{settings.contact_address || 'Av. das Nações Unidas, 12551 - SP'}</p>
                   </div>
                   <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                     <Phone size={20} strokeWidth={1.5} className="gold-text" />
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 300 }}>(11) 99581-9077</p>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 300 }}>
+                      {settings.whatsapp_number ? `(${settings.whatsapp_number.substring(2, 4)}) ${settings.whatsapp_number.substring(4, 9)}-${settings.whatsapp_number.substring(9)}` : '(11) 99581-9077'}
+                    </p>
                   </div>
                 </div>
 
                 {/* Social Media Row */}
                 <div style={{ display: 'flex', gap: '20px', marginTop: '30px' }}>
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="gold-hover" style={{ color: 'var(--primary-gold)', transition: 'all 0.3s ease' }}>
+                  <a href={settings.contact_instagram || "https://instagram.com"} target="_blank" rel="noopener noreferrer" className="gold-hover" style={{ color: 'var(--primary-gold)', transition: 'all 0.3s ease' }}>
                     <Instagram size={24} strokeWidth={1.5} />
                   </a>
-                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="gold-hover" style={{ color: 'var(--primary-gold)', transition: 'all 0.3s ease' }}>
+                  <a href={settings.contact_facebook || "https://facebook.com"} target="_blank" rel="noopener noreferrer" className="gold-hover" style={{ color: 'var(--primary-gold)', transition: 'all 0.3s ease' }}>
                     <Facebook size={24} strokeWidth={1.5} />
                   </a>
-                  <a href="mailto:contato@britomotors.com.br" className="gold-hover" style={{ color: 'var(--primary-gold)', transition: 'all 0.3s ease' }}>
+                  <a href={`mailto:${settings.contact_email || "contato@britomotors.com.br"}`} className="gold-hover" style={{ color: 'var(--primary-gold)', transition: 'all 0.3s ease' }}>
                     <Mail size={24} strokeWidth={1.5} />
                   </a>
                 </div>
@@ -386,7 +388,7 @@ function App() {
 
               <div style={{ height: '350px', borderRadius: '15px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.0512270908!2d-46.6945890251!3d-23.6025134789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce50cb680a6711%3A0x1c8b323c9603058a!2sAv.%20das%20Na%C3%A7%C3%B5es%20Unidas%2C%2012551%20-%20Brooklin%20Novo%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2004578-903!5e0!3m2!1spt-BR!2sbr!4v1710688000000!5m2!1spt-BR!2sbr" 
+                  src={settings.map_iframe_url || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.0512270908!2d-46.6945890251!3d-23.6025134789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce50cb680a6711%3A0x1c8b323c9603058a!2sAv.%20das%20Na%C3%A7%C3%B5es%20Unidas%2C%2012551%20-%20Brooklin%20Novo%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2004578-903!5e0!3m2!1spt-BR!2sbr!4v1710688000000!5m2!1spt-BR!2sbr"} 
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 
