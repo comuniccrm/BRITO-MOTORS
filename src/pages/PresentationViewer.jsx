@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
-import { playfair } from '../lib/fonts';
 import { useSettings } from '../hooks/useSettings';
 import './PresentationViewer.css';
 
@@ -53,7 +52,7 @@ export default function PresentationViewer() {
 
   if (mediaList.length === 0) {
     return (
-      <div style={{ width: '100vw', height: '100vh', display: 'flex', flexColum: 'column', justifyContent: 'center', alignItems: 'center', background: '#050505', color: '#D4AF37', fontFamily: playfair, textAlign: 'center', padding: '20px' }}>
+      <div style={{ width: '100vw', height: '100vh', display: 'flex', flexColum: 'column', justifyContent: 'center', alignItems: 'center', background: '#050505', color: '#D4AF37', fontFamily: "'Playfair Display', serif", textAlign: 'center', padding: '20px' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '10px' }}>Nenhuma Apresentação Ativa</h1>
         <p style={{ color: '#aaa', fontFamily: "'Montserrat', sans-serif" }}>Aguarde o administrador configurar os materiais.</p>
       </div>
