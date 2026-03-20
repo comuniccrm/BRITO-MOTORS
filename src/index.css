@@ -776,13 +776,14 @@ section {
   display: flex !important;
   flex-wrap: wrap;
   justify-content: center !important;
-  gap: 20px;
+  align-items: center !important; /* Fixes black borders: prevents stretching to match tallest card */
+  gap: 30px;
 }
 
 .testimonial-card {
-  max-width: 220px !important;
+  max-width: 350px !important; /* Increased for larger photos */
   width: 100% !important;
-  flex: 0 1 220px;
+  flex: 0 1 350px;
 }
 
 @media (max-width: 768px) {
@@ -790,20 +791,21 @@ section {
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
     justify-content: flex-start !important;
+    align-items: center !important; /* Fix stretching on mobile */
     padding-bottom: 20px !important;
     scroll-snap-type: x mandatory !important;
-    gap: 12px !important;
+    gap: 15px !important;
     -webkit-overflow-scrolling: touch !important;
     scrollbar-width: none;
-    padding-left: 10% !important;
-    padding-right: 10% !important;
+    padding-left: 5% !important;
+    padding-right: 5% !important;
   }
   .customer-grid::-webkit-scrollbar {
     display: none;
   }
   .testimonial-card {
-    flex: 0 0 200px !important;
-    max-width: 200px !important;
+    flex: 0 0 85vw !important; /* Huge premium size on mobile */
+    max-width: 85vw !important;
     scroll-snap-align: center !important;
   }
 }
