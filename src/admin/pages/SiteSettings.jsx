@@ -77,13 +77,13 @@ const SiteSettings = () => {
       const filePath = `settings/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('car-images')
-        .upload(filePath, file);
+        .from('images')
+        .upload(filePath, file, { upsert: true });
 
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage
-        .from('car-images')
+        .from('images')
         .getPublicUrl(filePath);
 
       handleChange(key, publicUrl);
