@@ -79,7 +79,7 @@ function App() {
                   alignItems: 'center', 
                   justifyContent: 'center',
                   cursor: 'pointer',
-                  opacity: selectedBrand === brand.name ? 1 : 0.4,
+                  opacity: selectedBrand === brand.name ? 1 : 0.8,
                   transition: 'all 0.3s ease',
                   background: 'transparent',
                   border: 'none',
@@ -95,7 +95,7 @@ function App() {
                   animate={{ 
                     filter: selectedBrand === brand.name 
                       ? 'grayscale(0) brightness(1.2)' 
-                      : 'grayscale(1) brightness(0.7) contrast(1.2)'
+                      : 'grayscale(1)'
                   }}
                   whileHover={{ 
                     filter: 'grayscale(0) brightness(1.2)',
