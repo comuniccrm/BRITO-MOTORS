@@ -227,6 +227,38 @@ export default function PresentationManager() {
                     <option value="cover">✂️ Preencher Tela (Cortar Bordas)</option>
                   </select>
                 </div>
+
+                {/* Recortar Duração do Vídeo */}
+                {media.type === 'video' && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' }}>
+                    <span style={{ fontSize: '0.8rem', color: '#888' }}>Recortar Duração (Segundos):</span>
+                    <input 
+                      type="number"
+                      placeholder="Início (ex: 5)"
+                      value={media.startTime || ''}
+                      onChange={(e) => {
+                        const newList = [...mediaList];
+                        newList[index].startTime = e.target.value;
+                        setMediaList(newList);
+                      }}
+                      style={{ width: '100px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: '1px solid #444', padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem' }}
+                      min="0"
+                    />
+                    <span style={{ fontSize: '0.8rem', color: '#888' }}>até</span>
+                    <input 
+                      type="number"
+                      placeholder="Fim (ex: 15)"
+                      value={media.endTime || ''}
+                      onChange={(e) => {
+                        const newList = [...mediaList];
+                        newList[index].endTime = e.target.value;
+                        setMediaList(newList);
+                      }}
+                      style={{ width: '100px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: '1px solid #444', padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem' }}
+                      min="0"
+                    />
+                  </div>
+                )}
               </div>
 
               <div style={{ display: 'flex', gap: '8px' }}>

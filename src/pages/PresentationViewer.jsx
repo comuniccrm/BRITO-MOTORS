@@ -74,29 +74,38 @@ export default function PresentationViewer() {
 
       {/* Infinite Scroll / Snap Container */}
       <div className="presentation-feed">
-        {mediaList.map((media, index) => (
-          <div key={media.id} className="presentation-slide">
-            {media.type === 'video' ? (
-              <video 
-                src={media.url} 
-                className="presentation-media"
-                style={{ objectFit: media.displayMode || 'contain' }}
-                controls 
-                autoPlay={index === 0}
-                muted={index === 0} 
-                playsInline
-                loop
-              />
-            ) : (
-              <img 
-                src={media.url} 
-                className="presentation-media"
-                style={{ objectFit: media.displayMode || 'contain' }}
-                alt={`Slide ${index + 1}`} 
-              />
-            )}
-          </div>
-        ))}
+        {mediaList.map((media, index) => {
+          let videoSrc = media.url;
+          if (media.type === 'video' && (media.startTime || media.endTime)) {
+            const start = media.startTime || '0';
+            const end = media.endTime ? `,${media.endTime}` : '';
+            videoSrc = `${media.url}#t=${start}${end}`;
+          }
+
+          return (
+            <div key={media.id} className="presentation-slide">
+              {media.type === 'video' ? (
+                <video 
+                  src={videoSrc} 
+                  className="presentation-media"
+                  style={{ objectFit: media.displayMode || 'contain' }}
+                  controls 
+                  autoPlay={index === 0}
+                  muted={index === 0} 
+                  playsInline
+                  loop
+                />
+              ) : (
+                <img 
+                  src={media.url} 
+                  className="presentation-media"
+                  style={{ objectFit: media.displayMode || 'contain' }}
+                  alt={`Slide ${index + 1}`} 
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
