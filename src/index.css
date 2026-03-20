@@ -96,6 +96,7 @@ img {
   z-index: 1;
 }
 
+<<<<<<< HEAD
 .button-primary::after {
   content: '';
   position: absolute;
@@ -106,6 +107,12 @@ img {
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: 0.5s;
   z-index: -1;
+=======
+.button-primary:hover {
+  background-color: var(--secondary-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(var(--primary-gold-rgb), 0.2);
+>>>>>>> cb6d3c1 (update logo colors)
 }
 
 .button-primary:hover::after {
@@ -293,6 +300,14 @@ section {
   height: 220px; /* Increased from 120px to push content down */
   overflow: hidden;
   border-radius: 4px 4px 0 0; /* Reduced from 12px 12px 0 0 */
+  background: linear-gradient(90deg, #151515 25%, #1a1a1a 50%, #151515 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 .card-image {
@@ -308,6 +323,7 @@ section {
 
 .year-badge {
   position: absolute;
+<<<<<<< HEAD
   top: 15px;
   right: 15px;
   background: var(--primary-gold);
@@ -315,6 +331,15 @@ section {
   padding: 5px 12px;
   border-radius: 20px;
   font-size: 0.8rem;
+=======
+  top: 6px;
+  right: 6px;
+  background: rgba(var(--primary-gold-rgb), 0.95);
+  color: black;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 0.55rem;
+>>>>>>> cb6d3c1 (update logo colors)
   font-weight: 700;
   z-index: 5;
 }
@@ -746,6 +771,21 @@ section {
   white-space: nowrap !important;
   flex-wrap: nowrap !important;
 }
+<<<<<<< HEAD
+=======
+
+@media (max-width: 480px) {
+  .card-button {
+    font-size: 0.75rem !important;
+    padding: 8px 15px !important;
+  }
+  .cta-button {
+    font-size: 0.8rem !important;
+    padding: 10px 20px !important;
+  }
+}
+
+>>>>>>> cb6d3c1 (update logo colors)
 
 @media (max-width: 480px) {
   .card-button {

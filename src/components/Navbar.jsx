@@ -55,7 +55,12 @@ const Navbar = ({ setSelectedBrand }) => {
                                 height: `${(settings.logo_size_mobile || settings.logo_size || 1) * 40}px`, 
                                 maxHeight: scrolled ? '50px' : '80px', 
                                 objectFit: 'contain',
+<<<<<<< HEAD
                                 transition: 'all 0.3s'
+=======
+                                transition: 'all 0.3s',
+                                filter: 'grayscale(1) brightness(1.5) contrast(1.1)'
+>>>>>>> cb6d3c1 (update logo colors)
                             }} 
                         />
                     ) : settings.logo_url ? (
@@ -67,7 +72,12 @@ const Navbar = ({ setSelectedBrand }) => {
                                 height: `${(settings.logo_size || 1) * 40}px`, 
                                 maxHeight: scrolled ? '50px' : '80px', 
                                 objectFit: 'contain',
+<<<<<<< HEAD
                                 transition: 'all 0.3s'
+=======
+                                transition: 'all 0.3s',
+                                filter: 'grayscale(1) brightness(1.5) contrast(1.1)'
+>>>>>>> cb6d3c1 (update logo colors)
                             }} 
                         />
                     ) : (
@@ -143,7 +153,11 @@ const Navbar = ({ setSelectedBrand }) => {
                                         style={{ height: `${(settings.logo_size_mobile || settings.logo_size || 1) * 35}px` }} 
                                     />
                                 ) : settings.logo_url ? (
+<<<<<<< HEAD
                                     <img src={settings.logo_url} alt="logo" style={{ height: '30px' }} />
+=======
+                                    <img src={settings.logo_url} alt="logo" style={{ height: '30px', filter: 'grayscale(1) brightness(1.2) contrast(1.1)' }} />
+>>>>>>> cb6d3c1 (update logo colors)
                                 ) : (
                                     <div dangerouslySetInnerHTML={{ __html: settings.logo_text ? settings.logo_text.replace('Motors', '<span>Motors</span>') : 'Brito <span>Motors</span>' }} />
                                 )}

@@ -12,8 +12,8 @@
 }
 
 .star-border-container:hover {
-  background: rgba(212, 175, 55, 0.1);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+  background: rgba(var(--primary-gold-rgb), 0.1);
+  box-shadow: 0 0 20px rgba(var(--primary-gold-rgb), 0.2);
 }
 
 .inner-content {

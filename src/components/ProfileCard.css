@@ -1,6 +1,6 @@
 :root {
-  --pc-gold: #d4af37;
-  --pc-gold-light: #f1d592;
+  --pc-gold: var(--primary-gold, #d4af37);
+  --pc-gold-light: var(--pc-gold);
   --pc-bg: #0D0D0D;
   --pc-border-radius: 20px;
 }
@@ -56,7 +56,7 @@
 }
 
 .pc-card-wrapper:hover .pc-card {
-  border-color: rgba(212, 175, 55, 0.3);
+  border-color: rgba(var(--primary-gold-rgb), 0.3);
 }
 
 .pc-inside {
@@ -113,7 +113,7 @@
   inset: -1px;
   background: radial-gradient(
     600px circle at var(--pointer-x) var(--pointer-y),
-    rgba(212, 175, 55, 0.6),
+    rgba(var(--primary-gold-rgb), 0.6),
     transparent 40%
   );
   z-index: -1;
@@ -183,7 +183,7 @@
   border-radius: 50%;
   overflow: hidden;
   border: 1.5px solid var(--pc-gold);
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 0 15px rgba(var(--primary-gold-rgb), 0.3);
 }
 
 .pc-mini-avatar img {

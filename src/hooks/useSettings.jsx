@@ -33,9 +33,26 @@ export const SettingsProvider = ({ children }) => {
           console.log('Site settings loaded:', obj);
           setSettings(obj);
 
+<<<<<<< HEAD
+=======
+          // Helper to convert hex to RGB for CSS variables
+          const hexToRgb = (hex) => {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : null;
+          };
+
+>>>>>>> cb6d3c1 (update logo colors)
           // Apply CSS custom properties for theming
           if (obj.primary_color) {
             document.documentElement.style.setProperty('--primary-gold', obj.primary_color);
+            const rgb = hexToRgb(obj.primary_color);
+            if (rgb) document.documentElement.style.setProperty('--primary-gold-rgb', rgb);
+          }
+          if (obj.button_bg_color) {
+            document.documentElement.style.setProperty('--btn-bg', obj.button_bg_color);
+          }
+          if (obj.button_text_color) {
+            document.documentElement.style.setProperty('--btn-text', obj.button_text_color);
           }
           if (obj.button_bg_color) {
             document.documentElement.style.setProperty('--btn-bg', obj.button_bg_color);

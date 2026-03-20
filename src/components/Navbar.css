@@ -96,7 +96,7 @@
 .cta-wrapper {
     background: var(--primary-gold);
     border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 4px 15px rgba(var(--primary-gold-rgb), 0.3);
     transition: all 0.3s ease;
     cursor: pointer;
     overflow: hidden;
@@ -105,7 +105,7 @@
 .cta-wrapper:hover {
     background: white;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+    box-shadow: 0 8px 25px rgba(var(--primary-gold-rgb), 0.5);
 }
 
 .cta-button {
@@ -256,5 +256,9 @@
         display: flex !important;
         flex: 1; 
         order: 3; /* Right on mobile to balance toggle */
+    }
+
+    .nav-logo {
+        max-height: 40px !important;
     }
 }

@@ -87,19 +87,26 @@ function App() {
                   borderRadius: '0',
                 }}
               >
-                  <img 
-                    src={brand.logo} 
-                    alt={brand.name} 
-                    className="brand-logo"
-                    style={{ 
-                      filter: selectedBrand === brand.name 
-                        ? 'brightness(1.2) contrast(1.1)' 
-                        : 'brightness(0.7) grayscale(0.1)',
-                      transition: 'filter 0.3s ease',
-                      maxHeight: '34px',
-                      objectFit: 'contain'
-                    }} 
-                  />
+                <motion.img 
+                  src={brand.logo} 
+                  alt={brand.name} 
+                  className="brand-logo"
+                  initial={false}
+                  animate={{ 
+                    filter: selectedBrand === brand.name 
+                      ? 'grayscale(0) brightness(1.2)' 
+                      : 'grayscale(1) brightness(0.7) contrast(1.2)'
+                  }}
+                  whileHover={{ 
+                    filter: 'grayscale(0) brightness(1.2)',
+                    opacity: 1
+                  }}
+                  style={{ 
+                    transition: 'filter 0.3s ease',
+                    maxHeight: '34px',
+                    objectFit: 'contain'
+                  }} 
+                />
               </motion.div>
             ))}
           </div>
@@ -130,7 +137,9 @@ function App() {
                           src={car.image} 
                           alt={car.name} 
                           className="card-image" 
-                          style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                          loading="lazy"
+                          decoding="async"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease', background: 'rgba(255,255,255,0.05)' }}
                         />
                       </div>
                       <div 
@@ -403,7 +412,12 @@ function App() {
                   maxHeight: '100px',
                   objectFit: 'contain',
                   margin: '0 auto', // Explicitly center the block image
+<<<<<<< HEAD
                   display: 'block'
+=======
+                  display: 'block',
+                  filter: 'grayscale(1) brightness(1.2) contrast(1.1)'
+>>>>>>> cb6d3c1 (update logo colors)
                 }} 
               />
             ) : (
