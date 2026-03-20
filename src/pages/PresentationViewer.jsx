@@ -9,6 +9,14 @@ export default function PresentationViewer() {
   const settings = useSettings(); // headless apply colors & favicon
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const carouselRef = useRef(null);
+
+  const scrollCarousel = (direction) => {
+    if (carouselRef.current) {
+      const scrollAmount = 400;
+      carouselRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     fetchMedia();
@@ -111,36 +119,43 @@ export default function PresentationViewer() {
       {/* Bottom Thumbnails Carousel */}
       <div className="presentation-carousel-container">
         <div className="presentation-carousel-title">Minha Lista VIP</div>
-        <div className="presentation-carousel">
-          {mediaList.map((media, index) => {
-            const isActive = index === activeIndex;
+        
+        <div className="carousel-wrapper">
+          <button className="carousel-arrow left" onClick={() => scrollCarousel('left')}>‹</button>
 
-            return (
-              <div 
-                key={media.id} 
-                className={`presentation-thumbnail ${isActive ? 'active' : ''}`}
-                onClick={() => setActiveIndex(index)}
-              >
-                {media.type === 'video' ? (
-                  <>
-                    <video 
-                      src={`${media.url}#t=0.1`} // Load just the first frame as poster
+          <div className="presentation-carousel" ref={carouselRef}>
+            {mediaList.map((media, index) => {
+              const isActive = index === activeIndex;
+
+              return (
+                <div 
+                  key={media.id} 
+                  className={`presentation-thumbnail ${isActive ? 'active' : ''}`}
+                  onClick={() => setActiveIndex(index)}
+                >
+                  {media.type === 'video' ? (
+                    <>
+                      <video 
+                        src={`${media.url}#t=0.1`} // Load just the first frame as poster
+                        className="presentation-thumbnail-media"
+                        muted
+                        playsInline
+                      />
+                      {!isActive && <div className="presentation-thumbnail-icon">▶</div>}
+                    </>
+                  ) : (
+                    <img 
+                      src={media.url} 
                       className="presentation-thumbnail-media"
-                      muted
-                      playsInline
+                      alt={`Thumbnail ${index + 1}`} 
                     />
-                    {!isActive && <div className="presentation-thumbnail-icon">▶</div>}
-                  </>
-                ) : (
-                  <img 
-                    src={media.url} 
-                    className="presentation-thumbnail-media"
-                    alt={`Thumbnail ${index + 1}`} 
-                  />
-                )}
-              </div>
-            );
-          })}
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <button className="carousel-arrow right" onClick={() => scrollCarousel('right')}>›</button>
         </div>
       </div>
     </div>
