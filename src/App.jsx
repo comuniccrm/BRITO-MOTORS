@@ -412,12 +412,8 @@ function App() {
                   maxHeight: '100px',
                   objectFit: 'contain',
                   margin: '0 auto', // Explicitly center the block image
-<<<<<<< HEAD
-                  display: 'block'
-=======
                   display: 'block',
                   filter: 'grayscale(1) brightness(1.2) contrast(1.1)'
->>>>>>> cb6d3c1 (update logo colors)
                 }} 
               />
             ) : (

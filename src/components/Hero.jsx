@@ -86,12 +86,8 @@ const Hero = () => {
 
   return (
     <section className="hero" style={{ position: 'relative', height: '85vh', overflow: 'hidden' }}>
-<<<<<<< HEAD
-=======
       {/* Preload active image for performance */}
       <img src={settings.hero_bg || activeCar.image} alt="" style={{ display: 'none' }} fetchPriority="high" />
-
->>>>>>> cb6d3c1 (update logo colors)
       {/* Background with Overlay and Cinematic Zoom */}
       <AnimatePresence mode='wait'>
         {isMobile && settings.banner_url_mobile ? (
