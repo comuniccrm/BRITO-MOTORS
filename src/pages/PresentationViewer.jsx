@@ -8,12 +8,12 @@ export default function PresentationViewer() {
   const [loading, setLoading] = useState(true);
   const settings = useSettings(); // headless apply colors & favicon
 
+  const [activeIndex, setActiveIndex] = useState(0);
+
   useEffect(() => {
     fetchMedia();
     document.title = "Apresentação VIP - " + (settings?.site_name || "Brito Motors");
     
-    // Hide overflow on body to make it a perfect app-like experience if needed, 
-    // but since we want infinite scroll, we allow Y scroll
     document.body.style.margin = "0";
     document.body.style.background = "#000";
     document.body.style.color = "#fff";
@@ -59,6 +59,15 @@ export default function PresentationViewer() {
     );
   }
 
+  // Get active media
+  const activeMedia = mediaList[activeIndex];
+  let activeVideoSrc = activeMedia?.url;
+  if (activeMedia?.type === 'video' && (activeMedia.startTime || activeMedia.endTime)) {
+    const start = activeMedia.startTime || '0';
+    const end = activeMedia.endTime ? `,${activeMedia.endTime}` : '';
+    activeVideoSrc = `${activeMedia.url}#t=${start}${end}`;
+  }
+
   return (
     <div className="presentation-container">
       {/* Discreet Header Logo */}
@@ -66,46 +75,73 @@ export default function PresentationViewer() {
         {settings?.logo_url ? (
           <img src={settings.logo_url} alt="Logo" className="presentation-logo" />
         ) : (
-          <h1 className="presentation-logo-text" style={{ fontFamily: playfair }}>
+          <h1 className="presentation-logo-text">
             {settings?.logo_text || "Brito Motors"}
           </h1>
         )}
       </div>
 
-      {/* Infinite Scroll / Snap Container */}
-      <div className="presentation-feed">
-        {mediaList.map((media, index) => {
-          let videoSrc = media.url;
-          if (media.type === 'video' && (media.startTime || media.endTime)) {
-            const start = media.startTime || '0';
-            const end = media.endTime ? `,${media.endTime}` : '';
-            videoSrc = `${media.url}#t=${start}${end}`;
-          }
+      {/* Main Hero Background (Netflix Stage) */}
+      <div className="presentation-hero">
+        {activeMedia?.type === 'video' ? (
+          <video 
+            key={activeVideoSrc} // Force re-render on source change
+            src={activeVideoSrc} 
+            className="presentation-media-main"
+            style={{ objectFit: activeMedia.displayMode || 'contain' }}
+            autoPlay
+            controls
+            playsInline
+            loop
+          />
+        ) : (
+          <img 
+            key={activeMedia?.url} // Force re-render exactly
+            src={activeMedia?.url} 
+            className="presentation-media-main"
+            style={{ objectFit: activeMedia?.displayMode || 'contain' }}
+            alt="Hero Presentation" 
+          />
+        )}
+      </div>
 
-          return (
-            <div key={media.id} className="presentation-slide">
-              {media.type === 'video' ? (
-                <video 
-                  src={videoSrc} 
-                  className="presentation-media"
-                  style={{ objectFit: media.displayMode || 'contain' }}
-                  controls 
-                  autoPlay={index === 0}
-                  muted={index === 0} 
-                  playsInline
-                  loop
-                />
-              ) : (
-                <img 
-                  src={media.url} 
-                  className="presentation-media"
-                  style={{ objectFit: media.displayMode || 'contain' }}
-                  alt={`Slide ${index + 1}`} 
-                />
-              )}
-            </div>
-          );
-        })}
+      {/* Netflix Bottom Vignette Overlay */}
+      <div className="presentation-vignette"></div>
+
+      {/* Bottom Thumbnails Carousel */}
+      <div className="presentation-carousel-container">
+        <div className="presentation-carousel-title">Minha Lista VIP</div>
+        <div className="presentation-carousel">
+          {mediaList.map((media, index) => {
+            const isActive = index === activeIndex;
+
+            return (
+              <div 
+                key={media.id} 
+                className={`presentation-thumbnail ${isActive ? 'active' : ''}`}
+                onClick={() => setActiveIndex(index)}
+              >
+                {media.type === 'video' ? (
+                  <>
+                    <video 
+                      src={`${media.url}#t=0.1`} // Load just the first frame as poster
+                      className="presentation-thumbnail-media"
+                      muted
+                      playsInline
+                    />
+                    {!isActive && <div className="presentation-thumbnail-icon">▶</div>}
+                  </>
+                ) : (
+                  <img 
+                    src={media.url} 
+                    className="presentation-thumbnail-media"
+                    alt={`Thumbnail ${index + 1}`} 
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

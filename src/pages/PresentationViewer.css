@@ -2,9 +2,7 @@
   width: 100vw;
   height: 100vh;
   background: #000;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   margin: 0;
   padding: 0;
   position: fixed;
@@ -12,57 +10,128 @@
   left: 0;
 }
 
-/* Hide scrollbar for seamless immersive experience */
-.presentation-container::-webkit-scrollbar {
-  display: none;
-}
-.presentation-container {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
 .presentation-header {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: absolute;
+  top: 30px;
+  left: 40px;
   z-index: 100;
-  opacity: 0.8;
+  opacity: 0.9;
   pointer-events: none;
 }
 
 .presentation-logo {
   height: 40px;
   object-fit: contain;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8));
 }
 
 .presentation-logo-text {
-  color: #D4AF37;
-  font-size: 1.5rem;
+  color: #fff;
+  font-size: 2rem;
   margin: 0;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  font-weight: bold;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+  letter-spacing: 2px;
 }
 
-.presentation-feed {
-  width: 100%;
-  height: auto;
-}
-
-.presentation-slide {
-  width: 100vw;
-  height: 100vh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #050505;
-  position: relative;
-}
-
-.presentation-media {
+/* Main Hero Stage */
+.presentation-hero {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* ensures whole image/video is visible without crop */
+}
+
+.presentation-media-main {
+  width: 100%;
+  height: 100%;
+  /* Object fit is set dynamically per item in JS (cover vs contain) */
+}
+
+/* Netflix Bottom Vignette */
+.presentation-vignette {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50vh;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 40%, transparent 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Bottom Carousel */
+.presentation-carousel-container {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 0 40px;
+}
+
+.presentation-carousel-title {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  font-family: 'Open Sans', 'Inter', sans-serif;
+}
+
+.presentation-carousel {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  scroll-behavior: smooth;
+}
+
+.presentation-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.presentation-thumbnail {
+  width: 180px;
+  height: 100px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  flex-shrink: 0;
+  background: #111;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.presentation-thumbnail:hover {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.5);
+  z-index: 2;
+}
+
+.presentation-thumbnail.active {
+  border-color: #fff;
+  transform: scale(1.05);
+}
+
+.presentation-thumbnail-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.presentation-thumbnail-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255,255,255,0.8);
+  font-size: 24px;
+  pointer-events: none;
 }
